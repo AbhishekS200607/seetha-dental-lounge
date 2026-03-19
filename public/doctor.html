@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Queue — Seetha Dental Lounge</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .brand-logo { display: inline-flex; align-items: center; gap: .5rem; }
+    .brand-logo svg { color: var(--yellow); }
+  </style>
+</head>
+<body class="pub">
+
+<div class="pub-nav-wrap">
+<nav class="pub-nav" style="border-radius:16px">
+  <a href="/index.html" class="pn-brand">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
+    Seetha Dental Lounge
+    <span style="font-size:.72rem;color:var(--blue);font-weight:600;background:var(--blue-soft);padding:.1rem .45rem;border-radius:4px">Doctor</span>
+  </a>
+  <div class="pn-links">
+    <span id="doctor-name-nav" style="color:#64748b;font-size:.85rem;display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .85rem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span id="doctor-name-text"></span>
+    </span>
+  </div>
+  <div class="pn-actions">
+    <button onclick="logout()" class="pn-call" style="cursor:pointer;border-color:#ef4444;color:#ef4444">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Logout
+    </button>
+  </div>
+</nav>
+</div>
+
+<div class="container">
+  <div id="alert-box"></div>
+
+  <!-- CURRENT TOKEN -->
+  <div class="card">
+    <p class="card-title" style="display:flex;align-items:center;gap:.4rem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Currently Serving
+    </p>
+    <div id="current-token-display">
+      <div class="loading-overlay"><span class="spinner"></span> Loading…</div>
+    </div>
+  </div>
+
+  <!-- QUEUE CONTROLS -->
+  <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap">
+    <button class="btn btn-primary" style="flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem" onclick="callNext()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Call Next Patient
+    </button>
+    <button class="btn btn-secondary btn-sm" onclick="loadQueue()" style="display:inline-flex;align-items:center;gap:.35rem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+      Refresh
+    </button>
+  </div>
+
+  <!-- WAITING QUEUE -->
+  <div class="card">
+    <p class="card-title" style="display:flex;align-items:center;gap:.4rem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+      Waiting Queue
+    </p>
+    <div id="queue-list">
+      <div class="loading-overlay"><span class="spinner"></span> Loading…</div>
+    </div>
+  </div>
+</div>
+
+<footer class="pub-footer" style="margin-top:2rem">
+  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
+    <span style="color:#fff;font-weight:800;font-size:.95rem">Seetha Dental Lounge</span>
+    <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
+      <span style="display:inline-flex;align-items:center;gap:.3rem">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Junction, Paravur, Kerala 691301
+      </span>
+      <span style="display:inline-flex;align-items:center;gap:.3rem">
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        080753 33723
+      </span>
+    </div>
+    <span style="font-size:.8rem">© 2025 Seetha Dental Lounge</span>
+  </div>
+</footer>
+
+<script src="/js/auth.js"></script>
+<script src="/js/icons.js"></script>
+<script src="/js/doctor.js"></script>
+</body>
+</html>
