@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Emergency Response | Seetha Dental Lounge</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: { "primary": "#003f87", "primary-container": "#0056b3", "surface": "#f8f9fa", "on-surface": "#191c1d" },
+            fontFamily: { "headline": ["Manrope","sans-serif"], "body": ["Inter","sans-serif"] },
+            borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2.5rem" },
+          },
+        },
+      }
+    </script>
+    <style>
+      .glass-morphism { background: rgba(255,255,255,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+      .signature-gradient { background: linear-gradient(135deg, #003f87 0%, #0056b3 100%); }
+      .emergency-gradient { background: linear-gradient(135deg, #b91c1c 0%, #dc2626 100%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-7xl z-50 rounded-2xl glass-morphism shadow-2xl shadow-blue-900/5 flex justify-between items-center h-16 md:h-20 px-4 md:px-10">
+        <a href="/index.html">
+            <img alt="Seetha Dental Lounge Logo" class="h-10 md:h-14 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+        </a>
+        <div class="hidden md:flex gap-10 items-center">
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/index.html">Home</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/about.html">About</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/contact.html">Contact</a>
+        </div>
+        <button onclick="window.location.href='/login.html'" class="hidden md:block signature-gradient text-white px-8 py-3 rounded-xl font-headline font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all">
+            Book Appointment
+        </button>
+    </nav>
+
+    <main class="pt-36 pb-20 max-w-4xl mx-auto px-6">
+        <div class="mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 border border-red-100 rounded-full shadow-sm mb-6">
+                <span class="material-symbols-outlined text-red-600 text-sm">emergency</span>
+                <span class="text-red-600 text-[10px] font-bold tracking-[0.2em] uppercase">Safety</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-headline font-extrabold text-primary leading-tight mb-4">Emergency Response</h1>
+            <p class="text-slate-500 font-light">Our protocols for patient safety during emergencies</p>
+        </div>
+
+        <!-- Emergency contact banner -->
+        <div class="emergency-gradient text-white p-8 rounded-3xl mb-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-5xl">call</span>
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">Clinic Emergency Line</p>
+                    <p class="text-3xl font-headline font-extrabold">080753 33723</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-5xl">local_hospital</span>
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-widest opacity-80 mb-1">National Ambulance</p>
+                    <p class="text-3xl font-headline font-extrabold">108</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-8">
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">health_and_safety</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">In-Clinic Emergency Protocol</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">All clinical staff at Seetha Dental Lounge are trained in Basic Life Support (BLS) and dental emergency management. Our clinic is equipped with an emergency kit including oxygen, epinephrine, and AED access.</p>
+                <ol class="text-slate-600 font-light leading-relaxed space-y-2 list-none">
+                    <li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">1</span> Stop treatment immediately and assess the patient.</li>
+                    <li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">2</span> Alert the senior dentist and clinic staff.</li>
+                    <li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">3</span> Administer first aid and retrieve the emergency kit.</li>
+                    <li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">4</span> Call 108 if hospital transfer is required.</li>
+                    <li class="flex items-start gap-3"><span class="w-6 h-6 rounded-full bg-primary/10 text-primary text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">5</span> Notify the patient's emergency contact.</li>
+                </ol>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">medication</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Allergic Reactions</h3>
+                    <p class="text-slate-500 text-sm font-light">Always inform us of any known allergies before treatment. In case of anaphylaxis, epinephrine is available on-site and 108 will be called immediately.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">favorite</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Cardiac Events</h3>
+                    <p class="text-slate-500 text-sm font-light">Staff are trained in CPR. In the event of cardiac arrest, CPR is initiated immediately while 108 is called. AED access is available nearby.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">air</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Fainting / Syncope</h3>
+                    <p class="text-slate-500 text-sm font-light">Patient is placed in a supine position with legs elevated. Oxygen is administered if needed. Vital signs are monitored until recovery.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-red-50 flex items-center justify-center text-red-600 group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">bloodtype</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Excessive Bleeding</h3>
+                    <p class="text-slate-500 text-sm font-light">Direct pressure is applied immediately. Haemostatic agents are available. If bleeding is uncontrolled, the patient is referred to a hospital.</p>
+                </div>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">dental</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Dental Emergencies After Hours</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">For dental emergencies outside clinic hours — such as severe toothache, knocked-out tooth, or dental abscess — call our clinic line at <strong class="text-primary">080753 33723</strong>. For life-threatening emergencies, call <strong class="text-red-600">108</strong> immediately.</p>
+                <div class="bg-primary/5 rounded-2xl p-4 mt-2">
+                    <p class="text-sm text-primary font-medium">💡 Knocked-out tooth tip: Keep the tooth moist in milk or saliva and get to a dentist within 30 minutes for the best chance of re-implantation.</p>
+                </div>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">location_on</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Nearest Hospital</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">The nearest government hospital is <strong class="text-primary">Paravur Taluk Hospital</strong>, located approximately 1 km from our clinic. For serious emergencies, call 108 for ambulance dispatch.</p>
+                <a href="https://www.google.com/maps/search/hospital+near+Paravur+Kerala" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-primary font-semibold text-sm hover:underline">
+                    <span class="material-symbols-outlined text-sm">open_in_new</span>
+                    Find nearby hospitals on Google Maps
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-12 glass-morphism border-t border-white/40">
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-4">
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/privacy.html">Privacy Protocol</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/terms.html">Terms of Care</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/sterilization.html">Sterilization Log</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/emergency.html">Emergency Response</a>
+            </div>
+            <p class="text-slate-400 font-body text-[10px] font-medium uppercase tracking-[0.2em]">© 2026 Seetha Dental Lounge. Expert Digital Dentistry</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Sterilization Log | Seetha Dental Lounge</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: { "primary": "#003f87", "primary-container": "#0056b3", "surface": "#f8f9fa", "on-surface": "#191c1d" },
+            fontFamily: { "headline": ["Manrope","sans-serif"], "body": ["Inter","sans-serif"] },
+            borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2.5rem" },
+          },
+        },
+      }
+    </script>
+    <style>
+      .glass-morphism { background: rgba(255,255,255,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+      .signature-gradient { background: linear-gradient(135deg, #003f87 0%, #0056b3 100%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-7xl z-50 rounded-2xl glass-morphism shadow-2xl shadow-blue-900/5 flex justify-between items-center h-16 md:h-20 px-4 md:px-10">
+        <a href="/index.html">
+            <img alt="Seetha Dental Lounge Logo" class="h-10 md:h-14 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+        </a>
+        <div class="hidden md:flex gap-10 items-center">
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/index.html">Home</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/about.html">About</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/contact.html">Contact</a>
+        </div>
+        <button onclick="window.location.href='/login.html'" class="hidden md:block signature-gradient text-white px-8 py-3 rounded-xl font-headline font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all">
+            Book Appointment
+        </button>
+    </nav>
+
+    <main class="pt-36 pb-20 max-w-4xl mx-auto px-6">
+        <div class="mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-md border border-white/40 rounded-full shadow-sm mb-6">
+                <span class="material-symbols-outlined text-primary text-sm">sanitizer</span>
+                <span class="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">Hygiene Standards</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-headline font-extrabold text-primary leading-tight mb-4">Sterilization Log</h1>
+            <p class="text-slate-500 font-light">Our commitment to your safety — updated January 2026</p>
+        </div>
+
+        <div class="space-y-8">
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">verified</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Our Sterilization Standard</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">At Seetha Dental Lounge, patient safety is our highest priority. Every instrument used in treatment undergoes a strict multi-step sterilization process compliant with Indian Dental Association (IDA) and WHO guidelines.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">cleaning_services</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Pre-Cleaning</h3>
+                    <p class="text-slate-500 text-sm font-light">All instruments are pre-soaked in enzymatic solution immediately after use to break down organic matter before mechanical cleaning.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">water</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Ultrasonic Cleaning</h3>
+                    <p class="text-slate-500 text-sm font-light">Instruments are processed in an ultrasonic cleaner to remove all debris from hard-to-reach areas before sterilization.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">local_fire_department</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Autoclave Sterilization</h3>
+                    <p class="text-slate-500 text-sm font-light">All reusable instruments are sterilized in a Class B autoclave at 134°C for a minimum of 18 minutes, killing all bacteria, viruses, and spores.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">inventory_2</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Sealed Packaging</h3>
+                    <p class="text-slate-500 text-sm font-light">Sterilized instruments are sealed in pouches with chemical indicators and stored in a clean, dry environment until use.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">masks</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Single-Use Disposables</h3>
+                    <p class="text-slate-500 text-sm font-light">Needles, gloves, suction tips, and saliva ejectors are single-use only and disposed of safely after each patient.</p>
+                </div>
+                <div class="glass-morphism p-8 rounded-3xl space-y-4 group hover:bg-white/50 transition-all">
+                    <div class="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-all">
+                        <span class="material-symbols-outlined text-2xl">chair</span>
+                    </div>
+                    <h3 class="font-bold text-primary">Surface Disinfection</h3>
+                    <p class="text-slate-500 text-sm font-light">Dental chairs, light handles, and all contact surfaces are disinfected with hospital-grade disinfectant between every patient.</p>
+                </div>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">fact_check</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Compliance & Audits</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">Our sterilization procedures are reviewed and audited regularly. Autoclave performance is tested with biological indicators weekly. All staff are trained in infection control protocols annually. We maintain a physical sterilization log at the clinic available for inspection upon request.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-12 glass-morphism border-t border-white/40">
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-4">
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/privacy.html">Privacy Protocol</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/terms.html">Terms of Care</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/sterilization.html">Sterilization Log</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/emergency.html">Emergency Response</a>
+            </div>
+            <p class="text-slate-400 font-body text-[10px] font-medium uppercase tracking-[0.2em]">© 2026 Seetha Dental Lounge. Expert Digital Dentistry</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Privacy Protocol | Seetha Dental Lounge</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#003f87", "primary-container": "#0056b3",
+              "surface": "#f8f9fa", "on-surface": "#191c1d",
+              "surface-container-low": "#f3f4f5",
+            },
+            fontFamily: { "headline": ["Manrope","sans-serif"], "body": ["Inter","sans-serif"] },
+            borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2.5rem" },
+          },
+        },
+      }
+    </script>
+    <style>
+      .glass-morphism { background: rgba(255,255,255,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+      .signature-gradient { background: linear-gradient(135deg, #003f87 0%, #0056b3 100%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-7xl z-50 rounded-2xl glass-morphism shadow-2xl shadow-blue-900/5 flex justify-between items-center h-16 md:h-20 px-4 md:px-10">
+        <a href="/index.html">
+            <img alt="Seetha Dental Lounge Logo" class="h-10 md:h-14 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+        </a>
+        <div class="hidden md:flex gap-10 items-center">
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/index.html">Home</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/about.html">About</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/contact.html">Contact</a>
+        </div>
+        <button onclick="window.location.href='/login.html'" class="hidden md:block signature-gradient text-white px-8 py-3 rounded-xl font-headline font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all">
+            Book Appointment
+        </button>
+    </nav>
+
+    <main class="pt-36 pb-20 max-w-4xl mx-auto px-6">
+        <div class="mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-md border border-white/40 rounded-full shadow-sm mb-6">
+                <span class="material-symbols-outlined text-primary text-sm">shield</span>
+                <span class="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">Legal</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-headline font-extrabold text-primary leading-tight mb-4">Privacy Protocol</h1>
+            <p class="text-slate-500 font-light">Last updated: January 2026</p>
+        </div>
+
+        <div class="space-y-8">
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">info</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Information We Collect</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">We collect personal information you provide when registering or booking an appointment — including your full name, phone number, and email address. We also collect appointment and token data to manage your queue position and visit history.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">database</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">How We Use Your Data</h2>
+                </div>
+                <ul class="text-slate-600 font-light leading-relaxed space-y-2 list-none">
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> To manage your appointment tokens and queue position</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> To contact you regarding your appointment status</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> To improve our clinic services and patient experience</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> To maintain accurate medical and visit records</li>
+                </ul>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">lock</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Data Security</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">Your data is stored securely using Supabase (PostgreSQL) with row-level security policies. Passwords are hashed and never stored in plain text. We use HTTPS for all data transmission. Only authorised clinic staff can access patient records.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">share</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Data Sharing</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">We do not sell, trade, or share your personal information with third parties. Your data is only accessible to your treating doctor and authorised clinic administrators. We do not use your data for advertising purposes.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">manage_accounts</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Your Rights</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">You have the right to access, correct, or request deletion of your personal data. To exercise these rights, contact us at the clinic directly or call <strong class="text-primary">080753 33723</strong>.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">contact_support</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Contact</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">For any privacy-related concerns, reach us at <strong class="text-primary">Seetha Dental Lounge, Junction, Paravur, Kerala 691301</strong> or call <strong class="text-primary">080753 33723</strong>.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-12 glass-morphism border-t border-white/40">
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-4">
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/privacy.html">Privacy Protocol</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/terms.html">Terms of Care</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/sterilization.html">Sterilization Log</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/emergency.html">Emergency Response</a>
+            </div>
+            <p class="text-slate-400 font-body text-[10px] font-medium uppercase tracking-[0.2em]">© 2026 Seetha Dental Lounge. Expert Digital Dentistry</p>
+        </div>
+    </footer>
+</body>
+</html>

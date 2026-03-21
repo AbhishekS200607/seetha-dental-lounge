@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html class="scroll-smooth" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Terms of Care | Seetha Dental Lounge</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: { "primary": "#003f87", "primary-container": "#0056b3", "surface": "#f8f9fa", "on-surface": "#191c1d" },
+            fontFamily: { "headline": ["Manrope","sans-serif"], "body": ["Inter","sans-serif"] },
+            borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2.5rem" },
+          },
+        },
+      }
+    </script>
+    <style>
+      .glass-morphism { background: rgba(255,255,255,0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3); }
+      .signature-gradient { background: linear-gradient(135deg, #003f87 0%, #0056b3 100%); }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-7xl z-50 rounded-2xl glass-morphism shadow-2xl shadow-blue-900/5 flex justify-between items-center h-16 md:h-20 px-4 md:px-10">
+        <a href="/index.html">
+            <img alt="Seetha Dental Lounge Logo" class="h-10 md:h-14 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+        </a>
+        <div class="hidden md:flex gap-10 items-center">
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/index.html">Home</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/about.html">About</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="/contact.html">Contact</a>
+        </div>
+        <button onclick="window.location.href='/login.html'" class="hidden md:block signature-gradient text-white px-8 py-3 rounded-xl font-headline font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all">
+            Book Appointment
+        </button>
+    </nav>
+
+    <main class="pt-36 pb-20 max-w-4xl mx-auto px-6">
+        <div class="mb-12">
+            <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-md border border-white/40 rounded-full shadow-sm mb-6">
+                <span class="material-symbols-outlined text-primary text-sm">gavel</span>
+                <span class="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">Legal</span>
+            </div>
+            <h1 class="text-5xl md:text-6xl font-headline font-extrabold text-primary leading-tight mb-4">Terms of Care</h1>
+            <p class="text-slate-500 font-light">Last updated: January 2026</p>
+        </div>
+
+        <div class="space-y-8">
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">handshake</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Acceptance of Terms</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">By registering or booking an appointment at Seetha Dental Lounge, you agree to these Terms of Care. These terms govern your use of our online queue management system and clinic services.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">confirmation_number</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Token & Appointment System</h2>
+                </div>
+                <ul class="text-slate-600 font-light leading-relaxed space-y-2">
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Each patient may hold one active token per doctor per day.</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Tokens are non-transferable and valid only for the booked date.</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Please arrive before your estimated call time. Skipped tokens may be moved to the end of the queue.</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Cancellations must be made at least 30 minutes before your scheduled slot.</li>
+                </ul>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">medical_services</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Clinical Responsibility</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">Treatment decisions are made solely by our qualified dental professionals. The online system is a scheduling tool only and does not constitute medical advice. Patients are responsible for providing accurate health history information.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">payments</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Payments & Fees</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">Consultation and treatment fees are payable at the clinic. The online booking system does not process payments. Fee structures are subject to change and will be communicated at the time of consultation.</p>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">block</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Prohibited Conduct</h2>
+                </div>
+                <ul class="text-slate-600 font-light leading-relaxed space-y-2">
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Creating multiple accounts to hold multiple tokens simultaneously.</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Providing false personal or medical information.</li>
+                    <li class="flex items-start gap-2"><span class="text-primary mt-1">•</span> Abusive or disrespectful behaviour towards clinic staff.</li>
+                </ul>
+            </div>
+
+            <div class="glass-morphism p-8 rounded-3xl space-y-4">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary">update</span>
+                    <h2 class="text-xl font-headline font-bold text-primary">Changes to Terms</h2>
+                </div>
+                <p class="text-slate-600 font-light leading-relaxed">We reserve the right to update these terms at any time. Continued use of our services after changes constitutes acceptance of the revised terms. For questions, contact us at <strong class="text-primary">080753 33723</strong>.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="w-full py-12 glass-morphism border-t border-white/40">
+        <div class="max-w-7xl mx-auto px-6 text-center space-y-4">
+            <div class="flex flex-wrap justify-center gap-6">
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/privacy.html">Privacy Protocol</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/terms.html">Terms of Care</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/sterilization.html">Sterilization Log</a>
+                <a class="text-slate-500 hover:text-primary transition-colors font-body text-[10px] font-bold uppercase tracking-[0.2em]" href="/emergency.html">Emergency Response</a>
+            </div>
+            <p class="text-slate-400 font-body text-[10px] font-medium uppercase tracking-[0.2em]">© 2026 Seetha Dental Lounge. Expert Digital Dentistry</p>
+        </div>
+    </footer>
+</body>
+</html>
