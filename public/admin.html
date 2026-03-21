@@ -110,39 +110,36 @@
             <span class="material-symbols-outlined">logout</span>
             <span class="text-sm font-medium">Sign Out</span>
         </button>
-    <!-- Top AppBar -->
-    <header class="fixed top-0 w-full z-50 glass-panel border-b border-slate-200 flex justify-between items-center px-6 h-20">
-        <div class="flex items-center gap-4">
-            <button onclick="toggleSidebar(true)" class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl">
-                <span class="material-symbols-outlined">menu</span>
-            </button>
-            <div class="text-xl font-extrabold bg-gradient-to-br from-primary to-blue-600 bg-clip-text text-transparent font-headline">
-                Seetha Dental Lounge
-            </div>
-            <div class="relative hidden md:block w-72">
-                <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
-                <input id="global-search" class="w-full bg-slate-100 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search clinic data..." type="text"/>
-            </div>
-        </div>
-    ...
-    </header>
+    </div>
+</aside>
 
-    <!-- Main Content -->
-    <main class="main-content lg:ml-64 pt-24 p-8 min-h-screen">
-        <div class="flex items-center gap-3">
-            <div class="text-right hidden sm:block">
-                <p class="text-xs font-bold text-primary leading-tight">Admin Portal</p>
-                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Administrator</p>
-            </div>
-            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <span class="material-symbols-outlined">admin_panel_settings</span>
-            </div>
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 glass-panel border-b border-slate-200 flex justify-between items-center px-6 h-20">
+    <div class="flex items-center gap-4">
+        <button onclick="toggleSidebar(true)" class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="text-xl font-extrabold bg-gradient-to-br from-primary to-blue-600 bg-clip-text text-transparent font-headline">
+            Seetha Dental Lounge
+        </div>
+        <div class="relative hidden md:block w-72">
+            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+            <input id="global-search" class="w-full bg-slate-100 border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search clinic data..." type="text"/>
+        </div>
+    </div>
+    <div class="flex items-center gap-3">
+        <div class="text-right hidden sm:block">
+            <p class="text-xs font-bold text-primary leading-tight">Admin Portal</p>
+            <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Administrator</p>
+        </div>
+        <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+            <span class="material-symbols-outlined">admin_panel_settings</span>
         </div>
     </div>
 </header>
 
 <!-- Main Content -->
-<main class="ml-64 pt-24 p-8 min-h-screen">
+<main class="lg:ml-64 pt-24 p-8 min-h-screen">
     <div id="global-alert"></div>
 
     <!-- WELCOME & ACTION -->
