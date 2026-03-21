@@ -71,10 +71,12 @@
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .stat-card { background: white; border-radius: 1rem; padding: 1rem; border: 1px solid #e2e8f0; }
+        .stat-card .num { font-size: 1.75rem; font-weight: 900; line-height: 1; margin: 0.25rem 0; }
+        .stat-card .lbl { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; }
         @media (max-width: 1024px) {
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; width: 280px; }
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
             .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0 !important; }
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -114,12 +116,12 @@
 </aside>
 
 <!-- Top AppBar -->
-<header class="fixed top-0 w-full z-50 glass-panel border-b border-slate-200 flex justify-between items-center px-6 h-20">
+<header class="fixed top-0 w-full z-50 glass-panel border-b border-slate-200 flex justify-between items-center px-4 md:px-6 h-16 md:h-20">
     <div class="flex items-center gap-4">
         <button onclick="toggleSidebar(true)" class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl">
             <span class="material-symbols-outlined">menu</span>
         </button>
-        <div class="text-xl font-extrabold bg-gradient-to-br from-primary to-blue-600 bg-clip-text text-transparent font-headline">
+        <div class="text-base md:text-xl font-extrabold bg-gradient-to-br from-primary to-blue-600 bg-clip-text text-transparent font-headline">
             Seetha Dental Lounge
         </div>
         <div class="relative hidden md:block w-72">
@@ -139,31 +141,31 @@
 </header>
 
 <!-- Main Content -->
-<main class="lg:ml-64 pt-24 p-8 min-h-screen">
+<main class="lg:ml-64 pt-20 md:pt-24 p-4 md:p-8 min-h-screen">
     <div id="global-alert"></div>
 
     <!-- WELCOME & ACTION -->
-    <div class="flex justify-between items-end mb-8">
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-6 md:mb-8">
         <div>
-            <h1 class="text-3xl font-extrabold text-primary font-headline tracking-tight">Clinical Dashboard</h1>
-            <p class="text-slate-500 font-medium mt-1">Monitor daily operations and patient queue status.</p>
+            <h1 class="text-2xl md:text-3xl font-extrabold text-primary font-headline tracking-tight">Clinical Dashboard</h1>
+            <p class="text-slate-500 font-medium mt-1 text-sm md:text-base">Monitor daily operations and patient queue status.</p>
         </div>
-        <div class="flex gap-3">
-            <button onclick="downloadReport()" class="bg-white text-primary border border-slate-200 px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-sm hover:bg-slate-50 active:scale-95 transition-all">
-                <span class="material-symbols-outlined text-xl">download</span>
-                Download Report
+        <div class="flex gap-2 md:gap-3">
+            <button onclick="downloadReport()" class="bg-white text-primary border border-slate-200 px-4 md:px-6 py-2.5 md:py-3 rounded-full font-bold flex items-center gap-2 shadow-sm hover:bg-slate-50 active:scale-95 transition-all text-sm">
+                <span class="material-symbols-outlined text-lg md:text-xl">download</span>
+                <span class="hidden sm:inline">Download Report</span>
             </button>
-            <button onclick="openDoctorModal()" class="signature-gradient text-white px-6 py-3 rounded-full font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all">
-                <span class="material-symbols-outlined text-xl">add_circle</span>
-                Add Specialist
+            <button onclick="openDoctorModal()" class="signature-gradient text-white px-4 md:px-6 py-2.5 md:py-3 rounded-full font-bold flex items-center gap-2 shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all text-sm">
+                <span class="material-symbols-outlined text-lg md:text-xl">add_circle</span>
+                <span class="hidden sm:inline">Add Specialist</span>
             </button>
         </div>
     </div>
 
     <!-- DASHBOARD -->
-    <section id="sec-dashboard" class="space-y-10">
+    <section id="sec-dashboard" class="space-y-6 md:space-y-10">
         <!-- Stats Bento Grid (Injected by admin.js) -->
-        <div id="stat-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6">
+        <div id="stat-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 md:gap-6">
             <div class="col-span-full py-12 text-center text-slate-400">Initializing analytics...</div>
         </div>
         <!-- Doctor Breakdown (Injected by admin.js) -->
@@ -171,22 +173,27 @@
     </section>
 
     <!-- DOCTORS -->
-    <section id="sec-doctors" style="display:none" class="space-y-8">
+    <section id="sec-doctors" style="display:none" class="space-y-6">
+        <div class="flex justify-end">
+            <button onclick="openDoctorModal()" class="signature-gradient text-white px-5 py-2.5 rounded-full font-bold flex items-center gap-2 shadow-lg text-sm">
+                <span class="material-symbols-outlined text-lg">add_circle</span> Add Doctor
+            </button>
+        </div>
         <div class="bg-surface-container-lowest rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
-            <div class="px-6 py-5 border-b border-slate-100 flex items-center justify-between">
+            <div class="px-4 md:px-6 py-4 md:py-5 border-b border-slate-100 flex items-center justify-between">
                 <h2 class="font-headline font-bold text-primary">Medical Staff</h2>
                 <span class="text-[10px] bg-slate-100 px-3 py-1 rounded-full text-slate-500 font-bold uppercase tracking-widest">Active Team</span>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+            <div class="overflow-x-auto -mx-0">
+                <table class="w-full text-left border-collapse min-w-[600px]">
                     <thead>
                         <tr class="bg-slate-50/50">
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Doctor</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Specialty</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Hours</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Limit</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Doctor</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden md:table-cell">Specialty</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden lg:table-cell">Hours</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden lg:table-cell">Limit</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="doctors-tbody" class="divide-y divide-slate-100"></tbody>
@@ -196,26 +203,26 @@
     </section>
 
     <!-- PATIENTS -->
-    <section id="sec-patients" style="display:none" class="space-y-8">
-        <div class="flex flex-col md:flex-row gap-4 mb-6">
+    <section id="sec-patients" style="display:none" class="space-y-6">
+        <div class="flex flex-col sm:flex-row gap-3">
             <div class="relative flex-1">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">search</span>
-                <input type="text" id="patient-search" placeholder="Search registry by name or phone..." oninput="debounceSearch()" class="w-full pl-12 pr-4 py-4 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all shadow-sm">
+                <input type="text" id="patient-search" placeholder="Search by name or phone..." oninput="debounceSearch()" class="w-full pl-12 pr-4 py-3 bg-white border border-slate-200 rounded-2xl focus:ring-2 focus:ring-primary/20 transition-all shadow-sm text-sm">
             </div>
-            <button onclick="openPatientModal()" class="signature-gradient text-white px-8 rounded-2xl font-bold flex items-center gap-2">
+            <button onclick="openPatientModal()" class="signature-gradient text-white px-6 py-3 rounded-2xl font-bold flex items-center justify-center gap-2 text-sm">
                 <span class="material-symbols-outlined">person_add</span> Add Patient
             </button>
         </div>
         <div class="bg-surface-container-lowest rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left border-collapse min-w-[480px]">
                     <thead>
                         <tr class="bg-slate-50/50">
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Patient Name</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Phone</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Joined</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Patient</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Phone</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden md:table-cell">Joined</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="patients-tbody" class="divide-y divide-slate-100"></tbody>
@@ -225,30 +232,28 @@
     </section>
 
     <!-- TOKENS -->
-    <section id="sec-tokens" style="display:none" class="space-y-8">
-        <div class="bg-surface-container-low p-4 rounded-2xl mb-6 flex flex-wrap items-center justify-between gap-4">
-            <div class="flex items-center gap-4">
-                <div class="relative">
-                    <select id="token-doctor-filter" class="appearance-none bg-white border border-slate-200 rounded-xl py-2.5 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/10 cursor-pointer text-slate-700">
-                        <option value="">All Doctors</option>
-                    </select>
-                    <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
-                </div>
-                <input id="token-date-filter" class="bg-white border border-slate-200 rounded-xl py-2 text-sm font-medium focus:ring-2 focus:ring-primary/10 text-slate-700" type="date"/>
-                <button onclick="loadTokens()" class="bg-primary text-white text-sm font-bold px-6 py-2 rounded-xl hover:bg-blue-900 transition-colors shadow-sm">Filter Logs</button>
+    <section id="sec-tokens" style="display:none" class="space-y-6">
+        <div class="bg-surface-container-low p-3 md:p-4 rounded-2xl flex flex-col sm:flex-row flex-wrap gap-3">
+            <div class="relative flex-1 min-w-[140px]">
+                <select id="token-doctor-filter" class="w-full appearance-none bg-white border border-slate-200 rounded-xl py-2.5 pl-4 pr-10 text-sm font-medium focus:ring-2 focus:ring-primary/10 cursor-pointer text-slate-700">
+                    <option value="">All Doctors</option>
+                </select>
+                <span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">expand_more</span>
             </div>
+            <input id="token-date-filter" class="flex-1 min-w-[140px] bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-sm font-medium focus:ring-2 focus:ring-primary/10 text-slate-700" type="date"/>
+            <button onclick="loadTokens()" class="bg-primary text-white text-sm font-bold px-6 py-2.5 rounded-xl hover:bg-blue-900 transition-colors shadow-sm">Filter</button>
         </div>
         <div class="bg-surface-container-lowest rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
+                <table class="w-full text-left border-collapse min-w-[480px]">
                     <thead>
                         <tr class="bg-slate-50/50">
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Token #</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Patient</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Doctor</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Date</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
-                            <th class="px-6 py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Token</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Patient</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden md:table-cell">Doctor</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider hidden sm:table-cell">Date</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider">Status</th>
+                            <th class="px-4 md:px-6 py-3 md:py-4 text-xs font-bold text-slate-400 uppercase tracking-wider text-right">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tokens-tbody" class="divide-y divide-slate-100"></tbody>
@@ -260,7 +265,7 @@
 
 <!-- MODALS -->
 <div id="doctor-modal" class="modal-backdrop" style="display:none">
-    <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto space-y-8 relative">
+    <div class="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl max-w-2xl w-full mx-3 md:mx-4 max-h-[92vh] overflow-y-auto space-y-6 md:space-y-8 relative">
         <h2 class="text-2xl font-headline font-extrabold text-primary" id="doctor-modal-title">Edit Specialist</h2>
         <div id="doctor-modal-alert"></div>
         <form id="doctor-form" onsubmit="saveDoctorForm(event)" class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -270,7 +275,7 @@
             </div>
             <div class="space-y-2">
                 <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Email *</label>
-                <input type="email" id="dm-email" class="w-full bg-slate-50 border-none rounded-xl py-3 focus:ring-2 focus:ring-primary/20">
+                <input type="email" id="dm-email" class="w-full bg-slate-50 border-none rounded-xl py-3 focus:ring-2 focus:ring-primary/20 read-only:opacity-60 read-only:cursor-not-allowed">
             </div>
             <div class="space-y-2">
                 <label class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Phone</label>
@@ -309,7 +314,7 @@
 </div>
 
 <div id="patient-modal" class="modal-backdrop" style="display:none">
-    <div class="bg-white p-10 rounded-[2.5rem] shadow-2xl max-w-lg w-full mx-4 space-y-8 relative">
+    <div class="bg-white p-6 md:p-10 rounded-[2rem] md:rounded-[2.5rem] shadow-2xl max-w-lg w-full mx-3 md:mx-4 max-h-[92vh] overflow-y-auto space-y-6 md:space-y-8 relative">
         <h2 class="text-2xl font-headline font-extrabold text-primary" id="patient-modal-title">Patient Profile</h2>
         <div id="patient-modal-alert"></div>
         <form id="patient-form" onsubmit="savePatientForm(event)" class="space-y-6">

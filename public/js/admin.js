@@ -29,22 +29,33 @@ async function loadDashboard() {
   const { summary, byDoctor } = res.data;
 
   const stats = [
-    { l: 'Total Bookings', n: summary.total,       c: 'primary',   i: 'analytics' },
-    { l: 'Waiting',        n: summary.waiting||0,  c: 'secondary', i: 'hourglass_empty' },
-    { l: 'In Progress',    n: summary.in_progress||0,c: 'primary', i: 'play_circle' },
-    { l: 'Completed',      n: summary.completed||0,c: 'emerald-600', i: 'check_circle' },
-    { l: 'Skipped',        n: summary.skipped||0,  c: 'amber-600', i: 'redo' },
-    { l: 'Cancelled',      n: summary.cancelled||0,c: 'error',     i: 'cancel' }
+    { l: 'Total Bookings', n: summary.total,          c: 'primary',     i: 'analytics',      status: '' },
+    { l: 'Waiting',        n: summary.waiting||0,     c: 'secondary',   i: 'hourglass_empty',status: 'waiting' },
+    { l: 'In Progress',    n: summary.in_progress||0, c: 'primary',     i: 'play_circle',    status: 'in_progress' },
+    { l: 'Completed',      n: summary.completed||0,   c: 'emerald-600', i: 'check_circle',   status: 'completed' },
+    { l: 'Skipped',        n: summary.skipped||0,     c: 'amber-600',   i: 'redo',           status: 'skipped' },
+    { l: 'Cancelled',      n: summary.cancelled||0,   c: 'error',       i: 'cancel',         status: 'cancelled' }
   ];
 
-  document.getElementById('stat-grid').innerHTML = stats.map(s => `
-    <div class="stat-card">
-      <div class="flex items-center justify-between mb-2">
-        <span class="material-symbols-outlined text-${s.c} opacity-80">${s.i}</span>
-      </div>
-      <div class="num text-${s.c}">${s.n}</div>
-      <div class="lbl">${s.l}</div>
-    </div>`).join('');
+  const colorMap = {
+    'primary': '#003f87', 'secondary': '#4a6079',
+    'emerald-600': '#059669', 'amber-600': '#d97706', 'error': '#ba1a1a'
+  };
+
+  document.getElementById('stat-grid').innerHTML = stats.map(s => {
+    const color = colorMap[s.c] || '#003f87';
+    const clickable = ['waiting','in_progress','completed','skipped','cancelled'].includes(s.status);
+    return `
+    <div onclick="${clickable ? `openStatDrawer('${s.status}','${s.l}')` : ''}" 
+         style="background:white;border:1px solid #e2e8f0;border-radius:1rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.06);${clickable ? 'cursor:pointer;' : ''}transition:box-shadow 0.2s"
+         onmouseover="${clickable ? "this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" : ''}" 
+         onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.06)'">
+      <span class="material-symbols-outlined" style="color:${color};opacity:0.8;font-size:1.5rem">${s.i}</span>
+      <div style="font-size:2rem;font-weight:900;line-height:1;margin:0.25rem 0;color:${color}">${s.n}</div>
+      <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8">${s.l}</div>
+      ${clickable && s.n > 0 ? '<div style="font-size:0.6rem;color:#94a3b8;margin-top:0.25rem">tap to view ›</div>' : ''}
+    </div>`;
+  }).join('');
 
   if (doctorList.length && Object.keys(byDoctor).length) {
     const rows = Object.entries(byDoctor).map(([did, count]) => {
@@ -88,6 +99,7 @@ async function loadDoctors() {
         <td class="px-6 py-4">
           <div class="flex flex-col">
             <span class="font-bold text-slate-900">${d.display_name}</span>
+            <span class="text-xs text-slate-400 font-medium">${d.profile?.email || '—'}</span>
             <span class="text-xs text-slate-400 font-medium">${d.profile?.phone || '—'}</span>
           </div>
         </td>
@@ -108,10 +120,20 @@ async function loadDoctors() {
             <button onclick="viewDoctorQueue('${d.id}','${d.display_name}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="View Queue">
               <span class="material-symbols-outlined text-lg">format_list_numbered</span>
             </button>
+            <button onclick="deleteDoctor('${d.id}','${escHtml(d.display_name)}')" class="p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Delete Doctor">
+              <span class="material-symbols-outlined text-lg">delete</span>
+            </button>
           </div>
         </td>
       </tr>`).join('')
     : '<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">No medical staff found</td></tr>';
+}
+
+async function deleteDoctor(id, name) {
+  if (!confirm(`Delete Dr. ${name}? This will also delete their account and cannot be undone.`)) return;
+  const res = await apiFetch(`/admin/doctors/${id}`, { method: 'DELETE' });
+  if (res.success) { loadDoctors(); showAlert('global-alert', 'Doctor deleted.', 'success'); }
+  else showAlert('global-alert', res.message);
 }
 
 async function toggleAvailability(id, val) {
@@ -134,6 +156,7 @@ function openDoctorModal(id = null) {
   document.getElementById('doctor-modal-title').textContent = isEdit ? 'Edit Specialist' : 'Add Doctor';
   document.getElementById('doctor-modal-alert').innerHTML = '';
   document.getElementById('dm-password-group').style.display = isEdit ? 'none' : '';
+  document.getElementById('dm-email').readOnly = isEdit;
 
   if (!isEdit) {
     document.getElementById('doctor-form').reset();
@@ -142,7 +165,7 @@ function openDoctorModal(id = null) {
     const d = doctorList.find(x => x.id === id);
     if (d) {
       document.getElementById('dm-name').value      = d.display_name || '';
-      document.getElementById('dm-email').value     = '';
+      document.getElementById('dm-email').value     = d.profile?.email || '';
       document.getElementById('dm-phone').value     = d.profile?.phone || '';
       document.getElementById('dm-specialty').value = d.specialty || '';
       document.getElementById('dm-start').value     = d.consultation_start_time || '';
@@ -220,11 +243,14 @@ async function loadPatients() {
         <td class="px-6 py-4 text-xs font-bold text-slate-400">${new Date(u.created_at).toLocaleDateString('en-IN')}</td>
         <td class="px-6 py-4 text-right">
           <div class="flex items-center justify-end gap-1">
-            <button onclick="openPatientModal('${u.id}','${escHtml(u.full_name)}','${u.phone||''}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit Profile">
+            <button onclick="openPatientModal('${u.id}','${escHtml(u.full_name)}','${u.phone||''}','${u.email||''}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit Profile">
               <span class="material-symbols-outlined text-lg">edit</span>
             </button>
             <button onclick="viewPatientHistory('${u.id}','${escHtml(u.full_name)}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Token History">
               <span class="material-symbols-outlined text-lg">history</span>
+            </button>
+            <button onclick="deletePatient('${u.id}','${escHtml(u.full_name)}')" class="p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Delete Patient">
+              <span class="material-symbols-outlined text-lg">delete</span>
             </button>
             ${u.is_banned
               ? `<button onclick="setUserStatus('${u.id}',{is_banned:false})" class="p-2 text-emerald-500 hover:bg-emerald-50 rounded-xl transition-all" title="Unban Patient"><span class="material-symbols-outlined text-lg">lock_open</span></button>`
@@ -236,6 +262,13 @@ async function loadPatients() {
         </td>
       </tr>`).join('')
     : '<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400">No patient records found</td></tr>';
+}
+
+async function deletePatient(id, name) {
+  if (!confirm(`Delete patient ${name}? This cannot be undone.`)) return;
+  const res = await apiFetch(`/admin/users/${id}`, { method: 'DELETE' });
+  if (res.success) { loadPatients(); showAlert('global-alert', 'Patient deleted.', 'success'); }
+  else showAlert('global-alert', res.message);
 }
 
 function debounceSearch() {
@@ -256,17 +289,18 @@ async function viewPatientHistory(id, name) {
 }
 
 // Patient modal
-function openPatientModal(id = null, name = '', phone = '') {
+function openPatientModal(id = null, name = '', phone = '', email = '') {
   editingPatientId = id;
   const isEdit = !!id;
-  document.getElementById('patient-modal-title').textContent = isEdit ? 'Patient Profile' : 'Add Patient';
+  document.getElementById('patient-modal-title').textContent = isEdit ? 'Edit Patient' : 'Add Patient';
   document.getElementById('patient-modal-alert').innerHTML = '';
   document.getElementById('pm-password-group').style.display = isEdit ? 'none' : '';
+  document.getElementById('pm-email').readOnly = isEdit;
 
   document.getElementById('pm-name').value  = name;
   document.getElementById('pm-phone').value = phone;
+  document.getElementById('pm-email').value = email;
   if (!isEdit) {
-    document.getElementById('pm-email').value    = '';
     document.getElementById('pm-password').value = '';
     document.getElementById('pm-status').value   = 'active';
   }
@@ -373,7 +407,17 @@ async function adminCancel(id) {
   else showAlert('global-alert', res.message);
 }
 
-// ── Drawer (token history) ─────────────────────────────────
+async function openStatDrawer(status, label) {
+  const date = todayIST();
+  openHistoryDrawer(`${label} — Today`);
+  const res = await apiFetch(`/admin/tokens?status=${status}&date=${date}`);
+  renderDrawerTokens(res, status);
+}
+
+function todayIST() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+}
+
 function openHistoryDrawer(title) {
   document.getElementById('drawer-title').textContent = title;
   document.getElementById('drawer-body').innerHTML = '<div class="py-12 text-center"><span class="material-symbols-outlined animate-spin text-primary">sync</span></div>';
@@ -386,34 +430,60 @@ function closeHistoryDrawer() {
   document.getElementById('history-drawer').classList.remove('open');
 }
 
-function renderDrawerTokens(res) {
+function renderDrawerTokens(res, statusFilter) {
   if (!res.success) {
     document.getElementById('drawer-body').innerHTML = `<div class="alert alert-error">${res.message}</div>`;
     return;
   }
-  if (!res.data.length) {
-    document.getElementById('drawer-body').innerHTML = '<div class="py-12 text-center text-slate-400 italic">No historical data found</div>';
+  const items = res.data.items || res.data;
+  if (!items.length) {
+    document.getElementById('drawer-body').innerHTML = '<div class="py-12 text-center text-slate-400 italic">No records found</div>';
     return;
   }
-  document.getElementById('drawer-body').innerHTML = res.data.map(t => `
-    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
-      <div class="flex justify-between items-center">
-        <span class="text-2xl font-black text-primary">#${t.token_number}</span>
+  document.getElementById('drawer-body').innerHTML = items.map(t => {
+    const timeMap = {
+      completed:   { label: 'Completed at',  val: t.completed_at },
+      cancelled:   { label: 'Cancelled at',  val: t.cancelled_at },
+      skipped:     { label: 'Skipped at',    val: t.skipped_at },
+      called:      { label: 'Called at',     val: t.called_at },
+      in_progress: { label: 'Started at',   val: t.called_at },
+    };
+    const tm = timeMap[t.status];
+    const timeStr = tm?.val ? new Date(tm.val).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }) : null;
+
+    return `
+    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+      <div class="flex justify-between items-start">
+        <div>
+          <span class="text-xl font-black text-primary">#${t.token_number}</span>
+          <span class="ml-2 text-xs text-slate-400 font-bold">${t.booking_date}</span>
+        </div>
         ${badge(t.status)}
       </div>
-      <div class="space-y-2">
-        <div class="flex items-center gap-2 text-sm font-bold text-slate-600">
-          <span class="material-symbols-outlined text-sm text-primary">medical_services</span>
-          ${t.doctor?.display_name || 'General Lounge'}
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2 text-sm font-bold text-slate-800">
+          <span class="material-symbols-outlined text-base text-primary">person</span>
+          ${t.patient?.full_name || '—'}
         </div>
         <div class="flex items-center gap-2 text-sm text-slate-500">
-          <span class="material-symbols-outlined text-sm">calendar_today</span>
-          ${t.booking_date}
+          <span class="material-symbols-outlined text-base">call</span>
+          ${t.patient?.phone || '—'}
         </div>
+        <div class="flex items-center gap-2 text-sm text-slate-500">
+          <span class="material-symbols-outlined text-base text-primary">medical_services</span>
+          ${t.doctor?.display_name || '—'}
+        </div>
+        ${timeStr ? `<div class="flex items-center gap-2 text-sm text-slate-500">
+          <span class="material-symbols-outlined text-base">schedule</span>
+          ${tm.label}: <span class="font-bold text-slate-700">${timeStr}</span>
+        </div>` : ''}
+        ${t.cancel_reason ? `<div class="flex items-center gap-2 text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-xl">
+          <span class="material-symbols-outlined text-sm">info</span>${t.cancel_reason}
+        </div>` : ''}
+        ${t.notes ? `<div class="text-xs text-slate-500 bg-slate-50 px-3 py-2 rounded-xl italic">"${t.notes}"</div>` : ''}
       </div>
-      ${t.notes ? `<div class="bg-slate-50 p-3 rounded-xl text-xs text-slate-600 leading-relaxed font-medium">"${t.notes}"</div>` : ''}
-      ${t.cancel_reason ? `<div class="text-[10px] font-bold uppercase text-error tracking-widest flex items-center gap-1"><span class="material-symbols-outlined text-xs">info</span> ${t.cancel_reason}</div>` : ''}
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 // ── Helpers ────────────────────────────────────────────────

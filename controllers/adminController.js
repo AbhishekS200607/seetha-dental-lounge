@@ -90,15 +90,23 @@ async function createUserByAdmin(req, res, next) {
 async function updateUser(req, res, next) {
   try {
     const { id } = req.params;
-    const allowed = ['full_name', 'phone'];
-    const update = Object.fromEntries(Object.entries(req.body).filter(([k]) => allowed.includes(k)));
-    if (update.phone && !validatePhone(update.phone)) return fail(res, 'Invalid phone number', 400);
-    if (!Object.keys(update).length) return fail(res, 'No valid fields', 400);
-
-    const { data, error } = await supabaseAdmin.from('profiles').update(update).eq('id', id).select().single();
-    if (error) return fail(res, error.message, 500);
-    await audit.log({ actorId: req.user.id, actorRole: 'admin', action: 'user_updated', targetEntity: 'profiles', targetId: id, metadata: update });
-    return ok(res, data);
+    const { full_name, phone, email } = req.body;
+    const profileUpdate = {};
+    if (full_name) profileUpdate.full_name = full_name.trim();
+    if (phone !== undefined) {
+      if (phone && !validatePhone(phone)) return fail(res, 'Invalid phone number', 400);
+      profileUpdate.phone = phone || null;
+    }
+    if (Object.keys(profileUpdate).length) {
+      const { error } = await supabaseAdmin.from('profiles').update(profileUpdate).eq('id', id);
+      if (error) return fail(res, error.message, 500);
+    }
+    if (email) {
+      const { error } = await supabaseAdmin.auth.admin.updateUserById(id, { email });
+      if (error) return fail(res, error.message, 400);
+    }
+    await audit.log({ actorId: req.user.id, actorRole: 'admin', action: 'user_updated', targetEntity: 'profiles', targetId: id, metadata: { ...profileUpdate, email } });
+    return ok(res, { id, ...profileUpdate, email });
   } catch (e) { next(e); }
 }
 
@@ -113,6 +121,18 @@ async function getUserTokens(req, res, next) {
       .order('created_at', { ascending: false });
     if (error) return fail(res, error.message, 500);
     return ok(res, data);
+  } catch (e) { next(e); }
+}
+
+async function deleteUser(req, res, next) {
+  try {
+    const { id } = req.params;
+    // tokens.patient_id is ON DELETE RESTRICT — must hard-delete all tokens first
+    await supabaseAdmin.from('tokens').delete().eq('patient_id', id);
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(id);
+    if (error) return fail(res, error.message, 400);
+    await audit.log({ actorId: req.user.id, actorRole: 'admin', action: 'user_deleted', targetEntity: 'profiles', targetId: id });
+    return ok(res, { id }, 'User deleted');
   } catch (e) { next(e); }
 }
 
@@ -145,7 +165,14 @@ async function getDoctors(req, res, next) {
       .select('*, profile:profile_id(full_name, phone, is_active)')
       .order('created_at', { ascending: true });
     if (error) return fail(res, error.message, 500);
-    return ok(res, data);
+
+    // Fetch emails from auth.users for each doctor
+    const enriched = await Promise.all(data.map(async d => {
+      const { data: authUser } = await supabaseAdmin.auth.admin.getUserById(d.profile_id);
+      return { ...d, profile: { ...d.profile, email: authUser?.user?.email || null } };
+    }));
+
+    return ok(res, enriched);
   } catch (e) { next(e); }
 }
 
@@ -194,15 +221,40 @@ async function createDoctor(req, res, next) {
 async function updateDoctor(req, res, next) {
   try {
     const { id } = req.params;
-    const allowed = ['display_name', 'specialty', 'consultation_start_time', 'consultation_end_time', 'max_daily_tokens', 'is_available'];
-    const update = Object.fromEntries(Object.entries(req.body).filter(([k]) => allowed.includes(k)));
-    if (!Object.keys(update).length) return fail(res, 'No valid fields', 400);
+    const { display_name, specialty, consultation_start_time, consultation_end_time, max_daily_tokens, is_available, phone } = req.body;
 
-    const { data, error } = await supabaseAdmin.from('doctors').update(update).eq('id', id).select().single();
+    const doctorUpdate = {};
+    if (display_name !== undefined) doctorUpdate.display_name = display_name;
+    if (specialty !== undefined) doctorUpdate.specialty = specialty;
+    if (consultation_start_time !== undefined) doctorUpdate.consultation_start_time = consultation_start_time || null;
+    if (consultation_end_time !== undefined) doctorUpdate.consultation_end_time = consultation_end_time || null;
+    if (max_daily_tokens !== undefined) doctorUpdate.max_daily_tokens = max_daily_tokens || null;
+    if (is_available !== undefined) doctorUpdate.is_available = is_available;
+
+    const { data, error } = await supabaseAdmin.from('doctors').update(doctorUpdate).eq('id', id).select().single();
     if (error) return fail(res, error.message, 500);
 
-    await audit.log({ actorId: req.user.id, actorRole: 'admin', action: 'doctor_updated', targetEntity: 'doctors', targetId: id, metadata: update });
+    // Also update phone in profiles if provided
+    if (phone !== undefined) {
+      if (phone && !validatePhone(phone)) return fail(res, 'Invalid phone number', 400);
+      await supabaseAdmin.from('profiles').update({ phone: phone || null }).eq('id', data.profile_id);
+    }
+
+    await audit.log({ actorId: req.user.id, actorRole: 'admin', action: 'doctor_updated', targetEntity: 'doctors', targetId: id, metadata: doctorUpdate });
     return ok(res, data);
+  } catch (e) { next(e); }
+}
+
+async function deleteDoctor(req, res, next) {
+  try {
+    const { id } = req.params;
+    const { data: doctor } = await supabaseAdmin.from('doctors').select('profile_id').eq('id', id).single();
+    if (!doctor) return fail(res, 'Doctor not found', 404);
+    const { error } = await supabaseAdmin.from('doctors').delete().eq('id', id);
+    if (error) return fail(res, error.message, 500);
+    await supabaseAdmin.auth.admin.deleteUser(doctor.profile_id);
+    await audit.log({ actorId: req.user.id, actorRole: 'admin', action: 'doctor_deleted', targetEntity: 'doctors', targetId: id });
+    return ok(res, { id }, 'Doctor deleted');
   } catch (e) { next(e); }
 }
 
@@ -220,7 +272,7 @@ async function setDoctorAvailability(req, res, next) {
 
 async function getAllTokens(req, res, next) {
   try {
-    const { date, doctor_id, page = 1, limit = 20 } = req.query;
+    const { date, doctor_id, status, page = 1, limit = 50 } = req.query;
     const offset = (page - 1) * limit;
 
     let query = supabaseAdmin
@@ -230,8 +282,9 @@ async function getAllTokens(req, res, next) {
       .order('token_number', { ascending: true })
       .range(offset, offset + limit - 1);
 
-    if (date) query = query.eq('booking_date', date);
+    if (date)      query = query.eq('booking_date', date);
     if (doctor_id) query = query.eq('doctor_id', doctor_id);
+    if (status)    query = query.eq('status', status);
 
     const { data, error, count } = await query;
     if (error) return fail(res, error.message, 500);
@@ -267,4 +320,4 @@ async function adminCancelToken(req, res, next) {
   } catch (e) { next(e); }
 }
 
-module.exports = { getDashboard, getUsers, createUserByAdmin, updateUser, getUserTokens, updateUserStatus, getDoctors, createDoctor, updateDoctor, setDoctorAvailability, getAllTokens, adminCancelToken };
+module.exports = { getDashboard, getUsers, createUserByAdmin, updateUser, deleteUser, getUserTokens, updateUserStatus, getDoctors, createDoctor, updateDoctor, deleteDoctor, setDoctorAvailability, getAllTokens, adminCancelToken };
