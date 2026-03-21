@@ -2,11 +2,10 @@
 
 const API = '/api';
 
-function getToken()   { return localStorage.getItem('sdl_token'); }
 function getProfile() { return JSON.parse(localStorage.getItem('sdl_profile') || 'null'); }
 
 function authHeaders() {
-  return { 'Content-Type': 'application/json', 'Authorization': `Bearer ${getToken()}` };
+  return { 'Content-Type': 'application/json' }; // Cookies sent automatically
 }
 
 async function apiFetch(path, options = {}) {
@@ -14,14 +13,22 @@ async function apiFetch(path, options = {}) {
     headers: authHeaders(),
     ...options
   });
+  
+  if (res.status === 401 && !path.includes('/auth/login')) {
+    logout();
+    return { ok: false, success: false, message: 'Session expired' };
+  }
+
   const json = await res.json().catch(() => ({ success: false, message: 'Invalid response' }));
   return { ok: res.ok, status: res.status, ...json };
 }
 
 function logout() {
-  localStorage.removeItem('sdl_token');
   localStorage.removeItem('sdl_profile');
-  location.href = '/login.html';
+  // Call server to clear cookie
+  fetch(API + '/auth/logout', { method: 'POST' }).finally(() => {
+    location.href = '/login.html';
+  });
 }
 
 function showAlert(containerId, message, type = 'error') {
@@ -45,8 +52,12 @@ function badge(status) {
 // Redirect if not authenticated or wrong role
 function requireAuth(expectedRole) {
   const profile = getProfile();
-  const token   = getToken();
-  if (!token || !profile) { location.href = '/login.html'; return false; }
+  if (!profile) { 
+    // We don't have token in localStorage anymore, so we rely on profile
+    // If the server rejects the request later, apiFetch will handle logout
+    location.href = '/login.html'; 
+    return false; 
+  }
   if (expectedRole && profile.role !== expectedRole) {
     location.href = `/${profile.role}.html`;
     return false;
@@ -56,28 +67,35 @@ function requireAuth(expectedRole) {
 
 // ---- LOGIN / REGISTER (login.html only) ----
 function switchTab(tab) {
-  document.getElementById('login-form').style.display    = tab === 'login'    ? '' : 'none';
-  document.getElementById('register-form').style.display = tab === 'register' ? '' : 'none';
-  document.getElementById('tab-login').classList.toggle('active',    tab === 'login');
-  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  const loginForm = document.getElementById('login-form');
+  const regForm = document.getElementById('register-form');
+  if (loginForm) loginForm.style.display = tab === 'login' ? '' : 'none';
+  if (regForm) regForm.style.display = tab === 'register' ? '' : 'none';
+  
+  const tabLogin = document.getElementById('tab-login');
+  const tabReg = document.getElementById('tab-register');
+  if (tabLogin) tabLogin.classList.toggle('auth-mode-active', tab === 'login');
+  if (tabReg) tabReg.classList.toggle('auth-mode-active', tab === 'register');
 }
 
 async function handleLogin(e) {
   e.preventDefault();
   const btn = document.getElementById('login-btn');
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+  const originalHtml = btn.innerHTML;
+  btn.disabled = true; btn.innerHTML = '<span class="material-symbols-outlined animate-spin">sync</span>';
 
   const res = await apiFetch('/auth/login', {
     method: 'POST',
     body: JSON.stringify({ email: document.getElementById('login-email').value, password: document.getElementById('login-password').value })
   });
 
-  btn.disabled = false;
-  btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg> Sign In`;
+  if (!res.success) {
+    btn.disabled = false;
+    btn.innerHTML = originalHtml;
+    return showAlert('alert-box', res.message);
+  }
 
-  if (!res.success) return showAlert('alert-box', res.message);
-
-  localStorage.setItem('sdl_token',   res.data.token);
+  // Profile is now enough; token is secure in httpOnly cookie
   localStorage.setItem('sdl_profile', JSON.stringify(res.data.profile));
 
   const role = res.data.profile.role;

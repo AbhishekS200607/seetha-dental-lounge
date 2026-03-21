@@ -2,12 +2,12 @@ const { supabaseAdmin, supabaseAnon } = require('../config/supabaseClient');
 
 // Verifies Bearer JWT and attaches req.user (profile row)
 async function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization;
-  if (!authHeader?.startsWith('Bearer ')) {
-    return res.status(401).json({ success: false, message: 'Missing token' });
-  }
+  // 1. Try to get token from httpOnly cookie or Authorization header
+  const token = req.cookies?.sdl_token || req.headers.authorization?.split(' ')[1];
 
-  const token = authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Missing session' });
+  }
 
   // Verify JWT with Supabase
   const { data: { user }, error } = await supabaseAnon.auth.getUser(token);

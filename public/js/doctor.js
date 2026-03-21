@@ -11,7 +11,9 @@ async function loadQueue() {
   const res = await apiFetch(`/doctor/queue`);
   if (!res.success) return showAlert('alert-box', res.message);
 
-  const { current, queue } = res.data;
+  const tokens = res.data || [];
+  const current = tokens.find(t => t.status === 'in_progress' || t.status === 'called') || null;
+  const queue = tokens.filter(t => t.status === 'waiting' || t.status === 'skipped');
 
   // 1. Render Current Patient
   const currentWrap = document.getElementById('current-token-display');
@@ -97,7 +99,7 @@ async function loadQueue() {
 }
 
 async function callNext() {
-  const res = await apiFetch('/doctor/next', { method: 'POST' });
+  const res = await apiFetch('/doctor/tokens/_/next', { method: 'POST' });
   if (!res.success) return showAlert('alert-box', res.message);
   loadQueue();
 }
@@ -112,6 +114,13 @@ async function skipToken(id) {
   const res = await apiFetch(`/doctor/tokens/${id}/skip`, { method: 'PATCH' });
   if (!res.success) return showAlert('alert-box', res.message);
   loadQueue();
+}
+
+function formatToken(t) {
+  if (!t) return '';
+  const slot = t.slot_time || '';
+  const prefix = slot.startsWith('Afternoon') ? 'A-' : 'M-';
+  return `${prefix}${t.token_number}`;
 }
 
 // Init

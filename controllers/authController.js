@@ -46,13 +46,24 @@ async function login(req, res, next) {
       return fail(res, 'Account suspended or banned', 403);
     }
 
-    return ok(res, { token: data.session.access_token, profile });
+    const token = data.session.access_token;
+    
+    // Set httpOnly cookie
+    const isProd = process.env.NODE_ENV === 'production';
+    res.cookie('sdl_token', token, {
+      httpOnly: true,
+      secure: isProd, // only over HTTPS in prod
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+    });
+
+    return ok(res, { profile }); // No longer need to send token in body
   } catch (e) { next(e); }
 }
 
 async function logout(req, res, next) {
   try {
-    // JWT is stateless; client should discard token. Supabase global sign-out optional.
+    res.clearCookie('sdl_token');
     return ok(res, null, 'Logged out');
   } catch (e) { next(e); }
 }

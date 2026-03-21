@@ -440,6 +440,13 @@ function statusBadge(u) {
   return `<span class="px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-tight bg-emerald-50 text-emerald-600">Active</span>`;
 }
 
+function formatToken(t) {
+  if (!t) return '';
+  const slot = t.slot_time || '';
+  const prefix = slot.startsWith('Afternoon') ? 'A-' : 'M-';
+  return `${prefix}${t.token_number}`;
+}
+
 function escHtml(str) {
   return (str || '').replace(/'/g, "\\'").replace(/"/g, '&quot;');
 }
