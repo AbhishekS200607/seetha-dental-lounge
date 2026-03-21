@@ -39,7 +39,7 @@ async function bookNewToken(req, res, next) {
       bookingDate: token.booking_date,
       slotTime: token.slot_time,
       specialty: token.doctor?.specialty || '',
-    }).catch(() => {});
+    });
 
     return ok(res, token, 'Token booked successfully', 201);
   } catch (e) {
