@@ -18,10 +18,16 @@ async function getDoctors(req, res, next) {
 
 async function bookNewToken(req, res, next) {
   try {
-    const { doctor_id, notes } = req.body;
+    const { doctor_id, notes, booking_date, slot_time } = req.body;
     if (!doctor_id) return fail(res, 'doctor_id is required', 400);
 
-    const token = await bookToken({ patientId: req.user.id, doctorId: doctor_id, notes });
+    const token = await bookToken({ 
+      patientId: req.user.id, 
+      doctorId: doctor_id, 
+      notes, 
+      bookingDate: booking_date, 
+      slotTime: slot_time 
+    });
     return ok(res, token, 'Token booked successfully', 201);
   } catch (e) {
     if (e.status) return fail(res, e.message, e.status);

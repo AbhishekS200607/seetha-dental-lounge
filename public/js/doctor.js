@@ -1,99 +1,120 @@
-// Doctor queue management
+// Doctor portal logic — queue management
 
 if (!requireAuth('doctor')) { /* redirected */ }
 
-const profile = getProfile();
-const nameEl = document.getElementById('doctor-name-text');
-if (nameEl) nameEl.textContent = profile?.full_name || '';
-
-async function loadCurrent() {
-  const res = await apiFetch('/doctor/current');
-  const el = document.getElementById('current-token-display');
-  if (!res.success || !res.data) {
-    el.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem">No patient currently being served.</p>';
-    return;
-  }
-  const t = res.data;
-  // Build action buttons based on current status.
-  // called:      Start (→in_progress) | Complete (→completed) | Skip | Cancel
-  // in_progress: Complete | Cancel
-  const startBtn = t.status === 'called'
-    ? `<button class="btn btn-primary" onclick="doAction('${t.id}','start')" style="display:inline-flex;align-items:center;gap:.4rem">${ic.play} Start</button>`
-    : '';
-  el.innerHTML = `
-    <div class="token-big">
-      <div class="token-num-wrap"><div class="token-num">${t.token_number}</div></div>
-      <div class="token-label">${t.patient?.full_name || 'Patient'} &nbsp; ${badge(t.status)}</div>
-      ${t.patient?.phone ? `<div style="color:var(--muted);font-size:.85rem;margin-top:.25rem;display:flex;align-items:center;justify-content:center;gap:.3rem">${ic.phone} ${t.patient.phone}</div>` : ''}
-    </div>
-    <div style="display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;padding-bottom:1rem">
-      ${startBtn}
-      <button class="btn btn-success" onclick="doAction('${t.id}','complete')" style="display:inline-flex;align-items:center;gap:.4rem">${ic.check} Complete</button>
-      <button class="btn btn-secondary" onclick="doAction('${t.id}','skip')" style="display:inline-flex;align-items:center;gap:.4rem">${ic.skip} Skip</button>
-      <button class="btn btn-danger" onclick="doAction('${t.id}','cancel')" style="display:inline-flex;align-items:center;gap:.4rem">${ic.cancel} Cancel</button>
-    </div>`;
-}
-
 async function loadQueue() {
-  await loadCurrent();
-  const res = await apiFetch('/doctor/queue');
-  const el = document.getElementById('queue-list');
-  if (!res.success) { el.innerHTML = `<div class="alert alert-error">${res.message}</div>`; return; }
+  const profile = getProfile();
+  if (document.getElementById('doctor-name-text')) {
+    document.getElementById('doctor-name-text').textContent = profile.full_name || 'Specialist';
+  }
 
-  const waiting = (res.data || []).filter(t => t.status === 'waiting');
-  const skipped = (res.data || []).filter(t => t.status === 'skipped');
+  const res = await apiFetch(`/doctor/queue`);
+  if (!res.success) return showAlert('alert-box', res.message);
 
-  if (!waiting.length && !skipped.length) {
-    el.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem">Queue is empty.</p>';
+  const { current, queue } = res.data;
+
+  // 1. Render Current Patient
+  const currentWrap = document.getElementById('current-token-display');
+  if (current) {
+    currentWrap.innerHTML = `
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 animate-in fade-in slide-in-from-top-4 duration-500">
+        <div class="space-y-4">
+          <div class="flex items-center gap-4">
+            <span class="text-6xl font-black text-primary tracking-tighter">#${current.token_number}</span>
+            <span class="px-4 py-1 rounded-full bg-indigo-100 text-indigo-700 text-[10px] font-black uppercase tracking-widest">In Progress</span>
+          </div>
+          <div>
+            <h3 class="text-3xl font-headline font-extrabold text-slate-900">${current.patient?.full_name}</h3>
+            <p class="text-slate-500 font-medium flex items-center gap-2 mt-1">
+              <span class="material-symbols-outlined text-sm">call</span>
+              ${current.patient?.phone}
+            </p>
+          </div>
+          ${current.notes ? `
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 max-w-md">
+              <p class="text-[10px] font-bold uppercase text-slate-400 mb-1 tracking-widest">Patient Notes</p>
+              <p class="text-sm text-slate-600 font-medium italic">"${current.notes}"</p>
+            </div>` : ''}
+        </div>
+        <div class="flex flex-col gap-3">
+          <button onclick="completeToken('${current.id}')" class="bg-emerald-600 text-white px-8 py-4 rounded-2xl font-bold shadow-lg shadow-emerald-200 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">check_circle</span>
+            Mark Completed
+          </button>
+          <button onclick="skipToken('${current.id}')" class="bg-white text-amber-600 border border-amber-200 px-8 py-4 rounded-2xl font-bold hover:bg-amber-50 transition-all flex items-center justify-center gap-2">
+            <span class="material-symbols-outlined">redo</span>
+            Skip Patient
+          </button>
+        </div>
+      </div>
+    `;
+  } else {
+    currentWrap.innerHTML = `
+      <div class="text-center py-12 space-y-4">
+        <div class="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto text-slate-300">
+          <span class="material-symbols-outlined text-4xl">person_off</span>
+        </div>
+        <div>
+          <p class="text-xl font-headline font-bold text-slate-400">No Active Session</p>
+          <p class="text-sm text-slate-400">Call the next patient from the queue to begin.</p>
+        </div>
+      </div>
+    `;
+  }
+
+  // 2. Render Queue List
+  const queueWrap = document.getElementById('queue-list');
+  const countEl = document.getElementById('queue-count');
+  
+  if (countEl) countEl.textContent = `${queue.length} Patient${queue.length === 1 ? '' : 's'}`;
+
+  if (!queue.length) {
+    queueWrap.innerHTML = `
+      <div class="col-span-full py-16 text-center space-y-3 bg-slate-50/50 border-2 border-dashed border-slate-100 rounded-[2.5rem]">
+        <span class="material-symbols-outlined text-4xl text-slate-200">group_off</span>
+        <p class="text-slate-400 font-medium">The waiting queue is currently empty.</p>
+      </div>
+    `;
     return;
   }
 
-  el.innerHTML = waiting.map(t => `
-    <div class="queue-item">
-      <div class="q-num">${t.token_number}</div>
-      <div class="q-info">
-        <div class="q-name">${t.patient?.full_name || 'Patient'}</div>
-        ${t.patient?.phone ? `<div style="font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.25rem">${ic.phone} ${t.patient.phone}</div>` : ''}
-        ${t.notes ? `<div style="font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.25rem">${ic.note} ${t.notes}</div>` : ''}
+  queueWrap.innerHTML = queue.map((t, idx) => `
+    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm hover:shadow-md transition-all flex items-center justify-between group">
+      <div class="flex items-center gap-5">
+        <div class="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-400 font-black text-xl group-hover:bg-primary/5 group-hover:text-primary transition-colors">
+          ${t.token_number}
+        </div>
+        <div>
+          <p class="font-bold text-slate-900">${t.patient?.full_name}</p>
+          <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">${idx === 0 ? 'Next in line' : `Waiting (${idx} ahead)`}</p>
+        </div>
       </div>
-      <div class="q-actions">
-        <button class="btn btn-secondary btn-sm" onclick="doAction('${t.id}','skip')" style="display:inline-flex;align-items:center;gap:.3rem">${ic.skip} Skip</button>
-        <button class="btn btn-danger btn-sm" onclick="doAction('${t.id}','cancel')" style="display:inline-flex;align-items:center;gap:.3rem">${ic.cancel} Cancel</button>
+      <div class="opacity-0 group-hover:opacity-100 transition-opacity">
+        <span class="material-symbols-outlined text-slate-300">more_vert</span>
       </div>
-    </div>`).join('') +
-    (skipped.length ? `<p style="font-size:.8rem;color:var(--muted);margin:.75rem 0 .25rem">Skipped</p>` +
-      skipped.map(t => `
-        <div class="queue-item" style="opacity:.7">
-          <div class="q-num">${t.token_number}</div>
-          <div class="q-info"><div class="q-name">${t.patient?.full_name || 'Patient'}</div></div>
-          <div class="q-actions">
-            <button class="btn btn-secondary btn-sm" onclick="recallSkipped('${t.id}')" style="display:inline-flex;align-items:center;gap:.3rem">${ic.refresh} Recall</button>
-          </div>
-        </div>`).join('') : '');
+    </div>
+  `).join('');
 }
 
 async function callNext() {
-  const btn = event.target;
-  btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Calling…';
-  const res = await apiFetch('/doctor/tokens/_/next', { method: 'POST' });
-  btn.disabled = false; btn.innerHTML = `${ic.play} Call Next Patient`;
-  if (!res.success) showAlert('alert-box', res.message);
-  else loadQueue();
+  const res = await apiFetch('/doctor/next', { method: 'POST' });
+  if (!res.success) return showAlert('alert-box', res.message);
+  loadQueue();
 }
 
-async function doAction(id, action) {
-  const map = { start: 'start', complete: 'complete', skip: 'skip', cancel: 'cancel' };
-  const res = await apiFetch(`/doctor/tokens/${id}/${map[action]}`, { method: 'PATCH' });
-  if (!res.success) showAlert('alert-box', res.message);
-  else loadQueue();
+async function completeToken(id) {
+  const res = await apiFetch(`/doctor/tokens/${id}/complete`, { method: 'PATCH' });
+  if (!res.success) return showAlert('alert-box', res.message);
+  loadQueue();
 }
 
-async function recallSkipped(id) {
-  const res = await apiFetch(`/doctor/tokens/${id}/recall`, { method: 'PATCH' });
-  if (!res.success) showAlert('alert-box', res.message);
-  else loadQueue();
+async function skipToken(id) {
+  const res = await apiFetch(`/doctor/tokens/${id}/skip`, { method: 'PATCH' });
+  if (!res.success) return showAlert('alert-box', res.message);
+  loadQueue();
 }
 
-// Initial load + polling every 15s
+// Init
 loadQueue();
-setInterval(loadQueue, 15000);
+// Auto-refresh every 30s
+setInterval(loadQueue, 30000);

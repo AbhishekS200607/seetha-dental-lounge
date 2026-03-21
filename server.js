@@ -25,16 +25,17 @@ app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc:  ["'self'", "'unsafe-inline'"],   // inline JS in HTML pages
-      styleSrc:   ["'self'", "'unsafe-inline'"],
-      imgSrc:     ["'self'", 'data:', 'blob:'],
-      connectSrc: ["'self'", process.env.SUPABASE_URL],
-      fontSrc:    ["'self'"],
+      scriptSrc:  ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.tailwindcss.com", "https://cdnjs.cloudflare.com"],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      styleSrc:   ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      imgSrc:     ["'self'", "data:", "blob:", "https://lh3.googleusercontent.com", "https://images.unsplash.com"],
+      connectSrc: ["'self'", process.env.SUPABASE_URL, "https://cdnjs.cloudflare.com"],
+      fontSrc:    ["'self'", "https://fonts.gstatic.com", "https://fonts.googleapis.com", "https://r2cdn.perplexity.ai"],
       objectSrc:  ["'none'"],
       frameAncestors: ["'none'"],
     }
   },
-  crossOriginEmbedderPolicy: false, // allow images from Supabase storage if needed
+  crossOriginEmbedderPolicy: false,
 }));
 
 const allowedOrigins = process.env.ALLOWED_ORIGIN

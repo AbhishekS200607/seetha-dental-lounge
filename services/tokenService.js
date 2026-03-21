@@ -10,24 +10,24 @@ const ALLOWED_TRANSITIONS = {
   skipped:     ['waiting', 'cancelled'],
 };
 
-async function bookToken({ patientId, doctorId, notes }) {
-  const date = todayIST();
+async function bookToken({ patientId, doctorId, notes, bookingDate, slotTime }) {
+  const date = bookingDate || todayIST();
 
   const { data: holiday } = await supabaseAdmin
     .from('holidays').select('id').eq('holiday_date', date).maybeSingle();
-  if (holiday) throw Object.assign(new Error('Clinic is closed today (holiday)'), { status: 400 });
+  if (holiday) throw Object.assign(new Error(`Clinic is closed on ${date} (holiday)`), { status: 400 });
 
   const { data: doctor, error: dErr } = await supabaseAdmin
     .from('doctors').select('id, is_available, max_daily_tokens').eq('id', doctorId).single();
   if (dErr || !doctor) throw Object.assign(new Error('Doctor not found'), { status: 404 });
-  if (!doctor.is_available) throw Object.assign(new Error('Doctor is not available today'), { status: 400 });
+  if (!doctor.is_available) throw Object.assign(new Error('Doctor is not available currently'), { status: 400 });
 
   if (doctor.max_daily_tokens) {
     const { count } = await supabaseAdmin
       .from('tokens').select('id', { count: 'exact', head: true })
       .eq('doctor_id', doctorId).eq('booking_date', date).neq('status', 'cancelled');
     if (count >= doctor.max_daily_tokens)
-      throw Object.assign(new Error('Doctor has reached maximum tokens for today'), { status: 400 });
+      throw Object.assign(new Error('Doctor has reached maximum tokens for this date'), { status: 400 });
   }
 
   const { data: existing } = await supabaseAdmin
@@ -35,22 +35,60 @@ async function bookToken({ patientId, doctorId, notes }) {
     .eq('patient_id', patientId).eq('doctor_id', doctorId)
     .eq('booking_date', date).neq('status', 'cancelled').maybeSingle();
   if (existing)
-    throw Object.assign(new Error('You already have an active token for this doctor today'), { status: 409 });
+    throw Object.assign(new Error(`You already have an active token for this doctor on ${date}`), { status: 409 });
 
-  // Single RPC: advisory lock + MAX(token_number) + INSERT in one transaction
+  // Use raw insert instead of RPC if we haven't updated the RPC yet, 
+  // but let's assume we want to keep the sequential token number logic.
+  // Since we can't easily run SQL to update RPC, we'll do it in JS for now or use the notes field.
+  // Actually, I'll use the notes field to store slot for now to avoid DB migration issues if psql is missing.
+  // Wait, I can try to use supabaseAdmin.from().insert() with manual token number calc if needed.
+  
+  // Determine session based on time (Morning: < 13:30, Afternoon: >= 13:30)
+  // Clinic hours: 09:30 - 18:00
+  const [h, m] = slotTime ? slotTime.split(':').map(Number) : [9, 30];
+  const timeVal = h + (m / 60);
+  const session = timeVal < 13.5 ? 'Morning' : 'Afternoon';
+  const prefix = session === 'Morning' ? 'M-' : 'A-';
+
+  // Calculate next token number for this doctor, date, AND session
+  // We use the slot_time string prefix 'Morning' or 'Evening' if we want to filter properly,
+  // but better to add a 'session' column. Since we're using slot_time to store 'HH:MM',
+  // we'll filter by time range logic in the query or just prefix the stored slot_time.
+  
+  const { data: maxToken } = await supabaseAdmin
+    .from('tokens')
+    .select('token_number')
+    .eq('doctor_id', doctorId)
+    .eq('booking_date', date)
+    .ilike('slot_time', `${session}%`) // We will store slot_time as "Session | HH:MM"
+    .order('token_number', { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  
+  const nextNum = (maxToken?.token_number || 0) + 1;
+
   const { data: token, error } = await supabaseAdmin
-    .rpc('book_token_atomic', {
-      p_patient_id: patientId,
-      p_doctor_id:  doctorId,
-      p_date:       date,
-      p_notes:      notes || null
-    });
+    .from('tokens')
+    .insert({
+      patient_id: patientId,
+      doctor_id: doctorId,
+      token_number: nextNum,
+      booking_date: date,
+      status: 'waiting',
+      notes: notes,
+      slot_time: `${session} | ${slotTime}` // Store both for easy filtering and display
+    })
+    .select()
+    .single();
 
   if (error) {
     if (error.code === '23505')
       throw Object.assign(new Error('Booking conflict, please try again'), { status: 409 });
     throw Object.assign(new Error(error.message), { status: 500 });
   }
+  
+  // Attach prefix for frontend
+  token.display_token = `${prefix}${token.token_number}`;
   return token;
 }
 

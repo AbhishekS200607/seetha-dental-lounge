@@ -1,328 +1,488 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="scroll-smooth" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seetha Dental Lounge — Paravur</title>
-<link rel="stylesheet" href="/css/style.css">
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Seetha Dental Lounge | Experience Clinical Serenity</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary": "#004951",
+              "primary-fixed": "#d7e2ff",
+              "surface-container-lowest": "#ffffff",
+              "secondary-fixed-dim": "#b2c9e6",
+              "on-primary-fixed": "#001a40",
+              "primary": "#003f87",
+              "on-secondary-container": "#4d637c",
+              "inverse-primary": "#acc7ff",
+              "on-primary-fixed-variant": "#004491",
+              "secondary-fixed": "#d0e4ff",
+              "on-tertiary-container": "#7fdfec",
+              "on-error": "#ffffff",
+              "on-secondary-fixed-variant": "#324861",
+              "on-primary": "#ffffff",
+              "secondary": "#4a6079",
+              "on-tertiary-fixed": "#001f23",
+              "primary-fixed-dim": "#acc7ff",
+              "inverse-surface": "#2e3132",
+              "on-tertiary": "#ffffff",
+              "surface-container-low": "#f3f4f5",
+              "outline-variant": "#c2c6d4",
+              "surface-container-high": "#e7e8e9",
+              "outline": "#727784",
+              "error-container": "#ffdad6",
+              "surface-bright": "#f8f9fa",
+              "on-error-container": "#93000a",
+              "tertiary-fixed": "#92f1fe",
+              "secondary-container": "#c8dffd",
+              "on-surface": "#191c1d",
+              "tertiary-container": "#00636c",
+              "on-primary-container": "#bbd0ff",
+              "surface-container": "#edeeef",
+              "primary-container": "#0056b3",
+              "inverse-on-surface": "#f0f1f2",
+              "error": "#ba1a1a",
+              "surface-dim": "#d9dadb",
+              "on-background": "#191c1d",
+              "background": "#f8f9fa",
+              "on-tertiary-fixed-variant": "#004f56",
+              "surface-container-highest": "#e1e3e4",
+              "on-surface-variant": "#424752",
+              "surface-variant": "#e1e3e4",
+              "on-secondary-fixed": "#031d33",
+              "on-secondary": "#ffffff",
+              "surface-tint": "#115cb9",
+              "surface": "#f8f9fa",
+              "tertiary-fixed-dim": "#75d5e2"
+            },
+            fontFamily: {
+              "headline": ["Manrope", "sans-serif"],
+              "body": ["Inter", "sans-serif"],
+              "label": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "2xl": "1.5rem", "3xl": "2.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+    <style>
+      .glass-morphism {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .glass-morphism-dark {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .signature-gradient {
+        background: linear-gradient(135deg, #003f87 0%, #0056b3 100%);
+      }
+      .liquid-bg {
+        background: radial-gradient(circle at 50% 50%, rgba(215, 226, 255, 0.4) 0%, rgba(248, 249, 250, 0) 70%);
+      }
+      .mobile-menu-open {
+        overflow: hidden;
+      }
+      #mobile-nav-overlay {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    </style>
 </head>
-<body class="pub">
-<div class="pub-nav-wrap">
-<nav class="pub-nav">
-<a href="/index.html" class="pn-brand">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-Seetha Dental Lounge
-</a>
-<div class="pn-links">
-<a href="/index.html" class="active">Home</a>
-<a href="#services">Services</a>
-<a href="#specialists">Specialists</a>
-<a href="/about.html">About</a>
-<a href="/contact.html">Contact</a>
-</div>
-<div class="pn-actions">
-<a href="tel:08075333723" class="pn-call">
-<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-080753 33723
-</a>
-<a href="/login.html" class="pn-login">Login / Register</a>
-<button class="pn-hamburger" onclick="document.getElementById('mobileMenu').classList.add('open')" aria-label="Open menu">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-</button>
-</div>
-</nav>
-</div>
+<body class="bg-surface font-body text-on-surface antialiased overflow-x-hidden">
+    <!-- Top Navigation Bar -->
+    <nav class="fixed top-4 md:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-7xl z-50 rounded-2xl glass-morphism shadow-2xl shadow-blue-900/5 flex justify-between items-center h-16 md:h-20 px-4 md:px-10">
+        <div class="flex items-center">
+            <a href="/index.html">
+                <img alt="Seetha Dental Lounge Logo" class="h-10 md:h-14 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+            </a>
+        </div>
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex gap-10 items-center">
+            <a class="text-primary font-headline font-bold text-sm tracking-tight relative after:absolute after:bottom-[-4px] after:left-0 after:w-full after:h-0.5 after:bg-primary" href="#home">Home</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="#about">About</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="#gallery">Gallery</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="#reviews">Stories</a>
+            <a class="text-slate-600 hover:text-primary transition-all font-headline font-semibold text-sm tracking-tight" href="#contact">Contact</a>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="window.location.href='/login.html'" class="hidden md:block signature-gradient text-white px-8 py-3 rounded-xl font-headline font-bold text-xs uppercase tracking-widest shadow-lg shadow-primary/20 hover:shadow-primary/40 active:scale-95 transition-all">
+                Book Appointment
+            </button>
+            <!-- Mobile Toggle -->
+            <button aria-label="Toggle Menu" class="md:hidden p-2 text-primary" onclick="toggleMobileMenu()">
+                <span class="material-symbols-outlined text-3xl" id="menu-icon">menu</span>
+            </button>
+        </div>
+    </nav>
 
-<div id="mobileMenu" class="pn-mobile-menu">
-<div class="pn-mobile-backdrop" onclick="document.getElementById('mobileMenu').classList.remove('open')"></div>
-<div class="pn-mobile-panel">
-<button class="pn-mobile-close" onclick="document.getElementById('mobileMenu').classList.remove('open')">
-<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-</button>
-<div class="pn-brand">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-Seetha Dental Lounge
-</div>
-<nav>
-<a href="/index.html" class="active" onclick="document.getElementById('mobileMenu').classList.remove('open')">Home</a>
-<a href="#services" onclick="document.getElementById('mobileMenu').classList.remove('open')">Services</a>
-<a href="#specialists" onclick="document.getElementById('mobileMenu').classList.remove('open')">Specialists</a>
-<a href="/about.html">About</a>
-<a href="/contact.html">Contact</a>
-</nav>
-<div class="pn-mobile-actions">
-<a href="tel:08075333723" class="pn-call">
-<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-080753 33723
-</a>
-<a href="/login.html" class="pn-login">Login / Register</a>
-</div>
-</div>
-</div>
+    <!-- Mobile Navigation Overlay -->
+    <div class="fixed inset-0 z-[60] glass-morphism opacity-0 pointer-events-none translate-y-[-10px] md:hidden" id="mobile-nav-overlay">
+        <div class="flex flex-col h-full p-8 pt-24 space-y-8">
+            <div class="flex justify-between items-center mb-4">
+                <img alt="Seetha Dental Lounge Logo" class="h-10 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+                <button class="p-2 text-primary" onclick="toggleMobileMenu()">
+                    <span class="material-symbols-outlined text-3xl">close</span>
+                </button>
+            </div>
+            <div class="flex flex-col gap-6 text-2xl font-headline font-bold text-primary">
+                <a href="#home" onclick="toggleMobileMenu()">Home</a>
+                <a href="#about" onclick="toggleMobileMenu()">About</a>
+                <a href="#gallery" onclick="toggleMobileMenu()">Gallery</a>
+                <a href="#reviews" onclick="toggleMobileMenu()">Stories</a>
+                <a href="#contact" onclick="toggleMobileMenu()">Contact</a>
+            </div>
+            <div class="pt-8 mt-auto">
+                <button onclick="window.location.href='/login.html'" class="w-full signature-gradient text-white py-5 rounded-2xl font-headline font-bold text-lg shadow-2xl">
+                    Book Appointment
+                </button>
+            </div>
+        </div>
+    </div>
 
-<div class="pub-hero">
-<div class="pub-hero-left">
-<div class="eyebrow">
-<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-Paravur's Trusted Dental Care
-</div>
-<h1>Your Smile,<br><span>Our Priority.</span></h1>
-<p>Skip the waiting room. Book your token online, track your queue in real time, and arrive only when it's your turn.</p>
-<div class="pub-hero-btns">
-<a href="/login.html?mode=register" class="btn-blue">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-Book a Token
-</a>
-<a href="/about.html" class="btn-outline-blue">Learn More</a>
-</div>
-</div>
-<div class="pub-hero-right">
-<div class="hero-circle">
-<svg width="180" height="180" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity:.18;position:absolute"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;padding-bottom:1rem">
-<svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-<svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
-</div>
-</div>
-<div class="hero-float f1">
-<div class="ficon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-Live Queue Tracking
-</div>
-<div class="hero-float f2">
-<div class="ficon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-Opens 9:30 AM
-</div>
-<div class="hero-float f3">
-<div class="ficon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-Instant Token
-</div>
-</div>
-</div>
+    <main>
+        <!-- Hero Section -->
+        <section class="relative min-h-screen flex items-center pt-24 pb-12 px-6 overflow-hidden liquid-bg" id="home">
+            <div class="absolute inset-0 z-0">
+                <img alt="Modern Dental Clinic" class="w-full h-full object-cover opacity-10" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZDWgnMJvKNFTpPQDPhkQBhwIzJcpI3R_Ch9FBSs3tc91CuGmpf7uKuirKhWVw3UFK0PL86oyU7q-xLlCTC7loiNR68eYouI1aVGsU_xR3trK3or3mJ_1irF166eLkd9FeUz87-6vLsDIq1KzlO-yp5Ozy4Qlmvms8Nfd3shh51W_JFc-U-RN9MlzAPXNAPb-tqd_zPlfMdWqxuC8EDX_8Kuc00gMySrHT4ijlfEpq8id_wcJPTG6gZoAxfo5Ip3c6bi-2aBJUvS4"/>
+                <div class="absolute inset-0 bg-gradient-to-b from-surface/0 via-surface/40 to-surface"></div>
+            </div>
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center z-10 relative">
+                <div class="space-y-6 md:space-y-10">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 bg-white/50 backdrop-blur-md border border-white/40 rounded-full shadow-sm">
+                        <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        <span class="text-primary text-[10px] font-bold tracking-[0.2em] uppercase">Clinical Serenity Boutique</span>
+                    </div>
+                    <h1 class="text-5xl md:text-8xl font-headline font-extrabold text-primary leading-[1.1] tracking-tight">
+                        Artistry in <br/><span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-blue-400">Dentistry.</span>
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 max-w-lg leading-relaxed font-light">
+                        Where high-end medical precision meets the effortless comfort of a luxury lounge. Experience dental care redefined.
+                    </p>
+                    <div class="flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-5">
+                        <button onclick="window.location.href='/login.html'" class="signature-gradient text-white px-8 md:px-10 py-4 md:py-5 rounded-2xl font-headline font-extrabold text-base md:text-lg shadow-2xl shadow-primary/30 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+                            <span>Book Appointment</span>
+                            <span class="material-symbols-outlined text-xl">calendar_today</span>
+                        </button>
+                        <button onclick="window.location.href='/login.html'" class="glass-morphism text-primary px-8 md:px-10 py-4 md:py-5 rounded-2xl font-headline font-extrabold text-base md:text-lg hover:bg-white/60 transition-all flex items-center justify-center gap-3">
+                            <span>Join Queue</span>
+                            <span class="material-symbols-outlined text-xl">group</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="relative mt-8 lg:mt-0">
+                    <div class="absolute -inset-10 md:-inset-20 bg-primary/10 blur-[80px] md:blur-[120px] rounded-full animate-pulse"></div>
+                    <div class="relative group max-w-md mx-auto lg:max-w-none">
+                        <div class="absolute -inset-1 bg-gradient-to-tr from-primary/20 to-blue-400/20 blur-xl opacity-50 group-hover:opacity-100 transition duration-1000"></div>
+                        <img alt="Smiling Patient" class="relative rounded-3xl shadow-2xl border-[8px] md:border-[12px] border-white/30 backdrop-blur-md w-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDX4MdGXRWrZKMWU6HQyv4Dpg8tYDrALiAf2SZ7aljDNSgXJbg23AUC5D5GG-MIT-cWdUyqGN66bI7qgIn8WhJ31gzQ2qCmjFGvQ98KfXEVzflsLhDIHbCvKJX0aW8IQn3TtvIWQ4IXGOmtkL6-x8lrOcKzoEnOi0sD-nmP1SE4rJPuiJCAD3as7Im-EWcEle8G5wzsNLXDYvoNLcXUs5TCZfRSurmApbKbBUPHPTxllCfQAOxytkAgCMDUCEKbRxp5cMxpGTn8lM"/>
+                        <!-- Floating Stat Card -->
+                        <div class="absolute -bottom-6 md:-bottom-10 -left-4 md:-left-10 glass-morphism p-4 md:p-8 rounded-2xl md:rounded-3xl shadow-2xl border border-white/50 transform hover:scale-105 transition-transform duration-500">
+                            <div class="flex items-center gap-4 md:gap-6">
+                                <div class="w-12 h-12 md:w-16 md:h-16 rounded-xl md:rounded-2xl bg-primary flex items-center justify-center text-white shadow-lg">
+                                    <span class="material-symbols-outlined text-2xl md:text-3xl">check_circle</span>
+                                </div>
+                                <div>
+                                    <p class="text-2xl md:text-4xl font-headline font-extrabold text-primary">15k+</p>
+                                    <p class="text-[8px] md:text-[10px] text-slate-500 uppercase font-bold tracking-[0.15em]">Lounge Visits</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="pub-search-wrap">
-<div class="pub-search">
-<div class="ps-field">
-<label>Speciality</label>
-<select>
-<option value="">All Specialities</option>
-<option>General Dentistry</option>
-<option>Orthodontics</option>
-<option>Oral Surgery</option>
-<option>Cosmetic Dentistry</option>
-</select>
-</div>
-<div class="ps-field">
-<label>Doctor Name</label>
-<input type="text" placeholder="Search doctor...">
-</div>
-<div class="ps-field">
-<label>Date</label>
-<input type="date">
-</div>
-<a href="/login.html?mode=register" class="ps-btn">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-Book Token
-</a>
-</div>
-</div>
+        <!-- About Section (Bento Grid) -->
+        <section class="py-20 md:py-32 relative overflow-hidden" id="about">
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="text-center mb-16 md:mb-24 space-y-4 md:space-y-6">
+                    <h2 class="text-4xl md:text-5xl font-headline font-extrabold text-primary tracking-tight">Evolved Excellence</h2>
+                    <p class="text-slate-500 max-w-2xl mx-auto text-base md:text-lg font-light leading-relaxed">Fusing two decades of clinical wisdom with avant-garde technology.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
+                    <!-- Tech Focus -->
+                    <div class="md:col-span-8 glass-morphism p-8 md:p-12 rounded-3xl hover:bg-white/50 transition-all group overflow-hidden relative">
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div>
+                                <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-8 md:mb-10 group-hover:scale-110 transition-transform">
+                                    <span class="material-symbols-outlined text-3xl">biotech</span>
+                                </div>
+                                <h3 class="text-2xl md:text-3xl font-headline font-extrabold mb-4 md:mb-6 text-primary">Intelligent Diagnostics</h3>
+                                <p class="text-slate-600 leading-relaxed text-base md:text-lg max-w-xl font-light">Precision at the micron level. Our 3D intraoral imaging suite ensures every treatment plan is rooted in digital clarity.</p>
+                            </div>
+                            <div class="mt-8 md:mt-12 flex flex-wrap gap-3">
+                                <span class="px-4 py-2 bg-white/60 backdrop-blur-sm border border-white/40 text-[9px] md:text-[10px] rounded-full font-bold uppercase tracking-wider text-primary whitespace-nowrap">3D Real-time Scan</span>
+                                <span class="px-4 py-2 bg-white/60 backdrop-blur-sm border border-white/40 text-[9px] md:text-[10px] rounded-full font-bold uppercase tracking-wider text-primary whitespace-nowrap">Quantum Laser</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Doctor Info -->
+                    <div class="md:col-span-4 signature-gradient p-8 md:p-12 rounded-3xl text-white shadow-2xl flex flex-col justify-end relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-32 -mt-32 blur-3xl group-hover:bg-white/20 transition-all duration-700"></div>
+                        <div class="relative z-10">
+                            <div class="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center mb-8 md:mb-10">
+                                <span class="material-symbols-outlined text-3xl">stars</span>
+                            </div>
+                            <h3 class="text-2xl md:text-3xl font-headline font-extrabold mb-4">Elite Craftsmanship</h3>
+                            <p class="text-blue-100 text-sm leading-relaxed mb-8 font-light">Our lead specialists maintain a standard of aesthetic excellence refined through decades of international practice.</p>
+                            <a class="inline-flex items-center gap-3 text-white font-bold group/btn text-sm uppercase tracking-widest" href="#specialists">
+                                <span>Meet The Team</span>
+                                <span class="material-symbols-outlined group-hover/btn:translate-x-2 transition-transform">arrow_forward</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Atmosphere -->
+                    <div class="md:col-span-5 glass-morphism p-8 md:p-12 rounded-3xl border border-white/30 hover:bg-white/50 transition-all group">
+                        <div class="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-tertiary/10 flex items-center justify-center text-tertiary mb-6 md:mb-8">
+                            <span class="material-symbols-outlined text-2xl md:text-3xl">spa</span>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-headline font-extrabold mb-4 text-primary">Sensory Calm</h3>
+                        <p class="text-slate-600 text-base leading-relaxed font-light">From ergonomic lounge chairs to curated acoustic environments, we've eliminated the 'clinical feel' entirely.</p>
+                    </div>
+                    <!-- Global Standards -->
+                    <div class="md:col-span-7 bg-slate-100/50 backdrop-blur-md border border-white/40 p-8 md:p-12 rounded-3xl flex flex-col sm:flex-row items-center gap-8 md:gap-10 hover:shadow-xl transition-all">
+                        <div class="shrink-0">
+                            <div class="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl glass-morphism flex items-center justify-center text-primary shadow-inner">
+                                <span class="material-symbols-outlined text-4xl">verified_user</span>
+                            </div>
+                        </div>
+                        <div class="text-center sm:text-left">
+                            <h3 class="text-xl md:text-2xl font-headline font-extrabold mb-3 text-primary">Biosecurity Suite</h3>
+                            <p class="text-slate-600 text-base leading-relaxed font-light">Operating with hospital-grade sterilization protocols that exceed international dental standards for your absolute safety.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="pub-section" style="padding-top:0">
-<div class="stats-bar">
-<div><div class="sb-num">500+</div><div class="sb-lbl">Happy Patients</div></div>
-<div><div class="sb-num">5+</div><div class="sb-lbl">Expert Doctors</div></div>
-<div><div class="sb-num">10+</div><div class="sb-lbl">Years Experience</div></div>
-<div><div class="sb-num">0 min</div><div class="sb-lbl">Avg Wait (with token)</div></div>
-</div>
-</div>
+        <!-- Gallery Section -->
+        <section class="py-20 md:py-32 relative" id="gallery">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-6 md:gap-8">
+                    <div class="space-y-3 md:space-y-4">
+                        <h2 class="text-4xl md:text-5xl font-headline font-extrabold text-primary tracking-tight">The Sanctuary</h2>
+                        <p class="text-slate-500 text-base md:text-lg font-light">A spatial reflection of our clinical philosophy.</p>
+                    </div>
+                    <div class="hidden md:flex gap-4">
+                        <button class="w-14 h-14 rounded-full glass-morphism flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300">
+                            <span class="material-symbols-outlined">chevron_left</span>
+                        </button>
+                        <button class="w-14 h-14 rounded-full glass-morphism flex items-center justify-center hover:bg-primary hover:text-white transition-all duration-300">
+                            <span class="material-symbols-outlined">chevron_right</span>
+                        </button>
+                    </div>
+                </div>
+                <!-- Grid adjusted for mobile -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6 h-auto md:h-[700px]">
+                    <div class="md:col-span-2 aspect-[4/3] md:aspect-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative group shadow-2xl">
+                        <img alt="Clinic Reception" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAhAw8mrBVQe_9jkkv-eiyyspEQv__G5XI8dovlg35NPYZi_QvNMbPhKwtcvXNb0ilyuv0HDs7_b3VTGpflvaVfMK2KzuGNH6HLDDcXtqY-hIC82egkGP4hlfvtbzm9Ey4gF8lYPSqajb7iTUcSIDe2lHfxCgSl4B8nb0ZvlPq5rzGJNJSwq5VFFyjKiY6P6mFoOfOubySFk4SF5p7OfUEseB8O60uC95D82kP8g6k7jrBgINWNCBueWcqnXU38b1coyBqPl2DdoE"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8 md:p-12">
+                            <div class="space-y-1 md:space-y-2">
+                                <span class="text-white/60 text-[10px] md:text-xs font-bold uppercase tracking-widest">Atmosphere</span>
+                                <p class="text-white text-xl md:text-2xl font-headline font-bold">Premium Reception Lounge</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="aspect-[4/3] md:aspect-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative group shadow-2xl">
+                        <img alt="Dental Chair" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK0Ymr4gGxiLjsL-8PFgy4yNr0L-G_IjdN9mI1X82cA7NgHcVKKiwTuhK0SVOyf99rqMi6qHM9g9Z6O3RglBiCcZsebmDxosZCH7zlYw4dy5fqQ_Y65qpNWqaj1NSqzOt_eoOT3U1hhnygJddD2N5HF_z2uOuTatTc5jCiliU9AIffh81iOh1lgtcTIgmNCwEV0sZ60vBO5Xe1kvewblZlQATzUMrET-umVqOIMz4ipwZ-tLWpu_wsZEmO7yVlz90bCoHcGBPEby8"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-end p-6 md:p-8">
+                            <p class="text-white text-lg font-headline font-bold">Clinical Precision</p>
+                        </div>
+                    </div>
+                    <div class="aspect-[4/3] md:aspect-auto rounded-[1.5rem] md:rounded-[2rem] overflow-hidden relative group shadow-2xl">
+                        <img alt="Consultation Room" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGJTEI90VnfqOrrfqiWEzH2Ievi-2fgWpioi6SPfJp6PmcLp1DXxwC0N3Vhd0Zhn_qUJAjEcJMtKqawCPr-KCl4dRDojoPmBVsF-aCwMEaWwxAo29zpEDc9izw-UIHQY9ViKLzOy2IL7nWl_vTA61mzPXkLmiBu67Guyv8Jrsl3_Jp9NZtoYZrc2lirsZ-0VRQE8aiW0oqGKj2hGBLaZv1Di7y8HzNc68nmahToG1gferzdWET65EE7askua8KbkwdF53_36j0ZOo"/>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity flex items-end p-6 md:p-8">
+                            <p class="text-white text-lg font-headline font-bold">Consultation Suite</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="pub-section" id="services">
-<p class="pub-section-label">What We Offer</p>
-<h2 class="pub-section-title">Premium Dental Services</h2>
-<p class="pub-section-sub">Comprehensive dental care for the whole family, delivered with modern technology and a gentle touch.</p>
-<div class="services-grid">
-<div class="service-card">
-<div class="sc-icon">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-</div>
-<h3>General Dentistry</h3>
-<p>Routine checkups, cleanings, fillings, and preventive care for all ages.</p>
-</div>
-<div class="service-card">
-<div class="sc-icon">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-</div>
-<h3>Cosmetic Dentistry</h3>
-<p>Teeth whitening, veneers, and smile makeovers to boost your confidence.</p>
-</div>
-<div class="service-card">
-<div class="sc-icon">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-</div>
-<h3>Orthodontics</h3>
-<p>Braces and aligners to straighten teeth and correct bite issues.</p>
-</div>
-<div class="service-card">
-<div class="sc-icon">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-</div>
-<h3>Oral Surgery</h3>
-<p>Extractions, implants, and surgical procedures with expert precision.</p>
-</div>
-<div class="service-card">
-<div class="sc-icon">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-</div>
-<h3>Pediatric Dentistry</h3>
-<p>Child-friendly dental care in a comfortable, stress-free environment.</p>
-</div>
-<div class="service-card">
-<div class="sc-icon">
-<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg>
-</div>
-<h3>Online Queue System</h3>
-<p>Book tokens online, track your position live, and skip the waiting room.</p>
-</div>
-</div>
-</div>
+        <!-- Reviews Section -->
+        <section class="py-20 md:py-32 liquid-bg" id="reviews">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="text-center mb-16 md:mb-24 space-y-4">
+                    <h2 class="text-4xl md:text-5xl font-headline font-extrabold text-primary tracking-tight">Patient Stories</h2>
+                    <p class="text-slate-500 font-light text-base md:text-lg">Real words from those who found their smile at Seetha.</p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+                    <!-- Review 1 -->
+                    <div class="glass-morphism p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col justify-between hover:scale-[1.02] transition-all duration-500 group">
+                        <div class="space-y-6">
+                            <div class="flex gap-1 text-amber-400">
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                            </div>
+                            <p class="text-slate-600 italic font-light leading-relaxed text-base md:text-lg">"The level of care here is unlike anything I've experienced. It felt more like a spa visit than a dental checkup. Truly serene."</p>
+                        </div>
+                        <div class="mt-8 md:mt-10 flex items-center gap-4 border-t border-white/40 pt-6 md:pt-8">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">MK</div>
+                            <div>
+                                <h4 class="font-headline font-bold text-primary text-sm md:text-base">Meera Krishnan</h4>
+                                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest font-bold">Verified Patient</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 2 -->
+                    <div class="glass-morphism p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col justify-between hover:scale-[1.02] transition-all duration-500 group">
+                        <div class="space-y-6">
+                            <div class="flex gap-1 text-amber-400">
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                            </div>
+                            <p class="text-slate-600 italic font-light leading-relaxed text-base md:text-lg">"They used a 3D scanner for my crowns and it was fascinating. No more messy impressions! The result is perfect."</p>
+                        </div>
+                        <div class="mt-8 md:mt-10 flex items-center gap-4 border-t border-white/40 pt-6 md:pt-8">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">RJ</div>
+                            <div>
+                                <h4 class="font-headline font-bold text-primary text-sm md:text-base">Rahul Joseph</h4>
+                                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest font-bold">Tech Entrepreneur</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review 3 -->
+                    <div class="glass-morphism p-8 md:p-10 rounded-[2rem] md:rounded-[2.5rem] flex flex-col justify-between hover:scale-[1.02] transition-all duration-500 group">
+                        <div class="space-y-6">
+                            <div class="flex gap-1 text-amber-400">
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                                <span class="material-symbols-outlined fill-current">star</span>
+                            </div>
+                            <p class="text-slate-600 italic font-light leading-relaxed text-base md:text-lg">"Highly recommend for families. My kids were so comfortable with the staff and the atmosphere. Best dental experience."</p>
+                        </div>
+                        <div class="mt-8 md:mt-10 flex items-center gap-4 border-t border-white/40 pt-6 md:pt-8">
+                            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">AN</div>
+                            <div>
+                                <h4 class="font-headline font-bold text-primary text-sm md:text-base">Anjali Nair</h4>
+                                <p class="text-[9px] md:text-[10px] text-slate-500 uppercase tracking-widest font-bold">Educator</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-<div class="pub-section">
-<div class="why-grid">
-<div class="why-img-wrap">
-<div class="why-img-circle">
-<svg width="140" height="140" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><path d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6 6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3"/><path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4"/><circle cx="20" cy="10" r="2"/></svg>
-</div>
-</div>
-<div>
-<p class="pub-section-label" style="text-align:left">Why Choose Us</p>
-<h2 class="pub-section-title" style="text-align:left;margin-bottom:1.5rem">We Always Ensure<br>Best Dental Care</h2>
-<div class="why-points">
-<div class="why-point">
-<div class="wp-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-<div><h4>Zero Wait Time</h4><p>Our smart token system means you only come in when it's your turn — no more crowded waiting rooms.</p></div>
-</div>
-<div class="why-point">
-<div class="wp-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-<div><h4>Expert Specialists</h4><p>Our experienced dental professionals cover every aspect of oral health care.</p></div>
-</div>
-<div class="why-point">
-<div class="wp-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-<div><h4>Real-Time Updates</h4><p>Track your queue position live from your phone. Get notified when your turn is near.</p></div>
-</div>
-</div>
-<div style="margin-top:1.5rem"><a href="/about.html" class="btn-blue">More About Us</a></div>
-</div>
-</div>
-</div>
+        <!-- Contact Section -->
+        <section class="py-20 md:py-32 relative overflow-hidden" id="contact">
+            <div class="max-w-7xl mx-auto px-6 relative z-10">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-24 items-center">
+                    <div class="space-y-10 md:space-y-12">
+                        <div class="text-center md:text-left">
+                            <h2 class="text-4xl md:text-5xl font-headline font-extrabold text-primary mb-6">Let's Connect</h2>
+                            <p class="text-slate-500 leading-relaxed text-base md:text-lg font-light">Eager to transform your smile journey? Visit our lounge in Paravur for a consultation that changes your perspective on dentistry.</p>
+                        </div>
+                        <div class="space-y-6 md:space-y-8">
+                            <div class="flex items-start gap-5 md:gap-6 group">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl glass-morphism flex items-center justify-center text-primary group-hover:scale-110 transition-all duration-300 flex-shrink-0">
+                                    <span class="material-symbols-outlined text-2xl md:text-3xl">location_on</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary text-base md:text-lg">Our Location</h4>
+                                    <p class="text-slate-500 font-light mt-1 text-sm md:text-base">Junction, Paravur, Kerala 691301</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-5 md:gap-6 group">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl glass-morphism flex items-center justify-center text-primary group-hover:scale-110 transition-all duration-300 flex-shrink-0">
+                                    <span class="material-symbols-outlined text-2xl md:text-3xl">call</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary text-base md:text-lg">Direct Line</h4>
+                                    <p class="text-slate-500 font-light mt-1 text-sm md:text-base">080753 33723</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-5 md:gap-6 group">
+                                <div class="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl glass-morphism flex items-center justify-center text-primary group-hover:scale-110 transition-all duration-300 flex-shrink-0">
+                                    <span class="material-symbols-outlined text-2xl md:text-3xl">schedule</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-primary text-base md:text-lg">Lounge Hours</h4>
+                                    <p class="text-slate-500 font-light mt-1 text-sm md:text-base">9:30 AM - 6:00 PM Daily</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-4 text-center md:text-left">
+                            <button onclick="window.location.href='https://maps.google.com/?q=Seetha+Dental+Lounge+Paravur'" class="w-full sm:w-auto signature-gradient text-white px-10 md:px-12 py-4 md:py-5 rounded-2xl font-headline font-bold text-base md:text-lg shadow-2xl shadow-primary/30 hover:shadow-primary/50 transition-all">
+                                Get Directions
+                            </button>
+                        </div>
+                    </div>
+                    <div class="h-[400px] md:h-[550px] rounded-[2rem] md:rounded-[3rem] overflow-hidden shadow-2xl bg-white/30 backdrop-blur-md border-[8px] md:border-[12px] border-white/50 relative group">
+                        <!-- Map Placeholder Image -->
+                        <img alt="Map Location" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOrGgHFTbTBE26DqICCyiZvkGdelD-bRscm-yllNdGOKC6hCzTwqlZuAEypR1p0-uIlTGDnoT8hAqrwjPURAbuU8qnfECaYNkzasV9Zeq2944JZJ6AHknK6GzYXFNZ2qXw6k9GT648ZoGMxj2yH4EJtCq-oz7YAbWMHDP2EqKTE71AQ-EKjlSlQgLwFYEaTBvcFwz7t7H47dLzSr-HylV0njZY6aOsUCXlgg1lyowuRpC3Jj_ovslgdPq-kShJZVE-dHPE1TmSnKA"/>
+                        <div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+                        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <div class="relative">
+                                <div class="absolute inset-0 bg-primary rounded-full animate-ping opacity-25"></div>
+                                <div class="w-16 h-16 md:w-20 md:h-20 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl relative z-10 border-4 border-white/50">
+                                    <span class="material-symbols-outlined text-3xl md:text-4xl">location_on</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<div class="pub-section" id="specialists">
-<p class="pub-section-label">Our Team</p>
-<h2 class="pub-section-title">Meet Our Specialists</h2>
-<p class="pub-section-sub">Experienced, caring dental professionals dedicated to your oral health.</p>
-<div class="specialists-grid">
-<div class="specialist-card">
-<div class="sp-avatar"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-<h4>Dr. General Dentist</h4><p>General Dentistry</p>
-</div>
-<div class="specialist-card">
-<div class="sp-avatar"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-<h4>Dr. Orthodontist</h4><p>Orthodontics</p>
-</div>
-<div class="specialist-card">
-<div class="sp-avatar"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-<h4>Dr. Oral Surgeon</h4><p>Oral Surgery</p>
-</div>
-<div class="specialist-card">
-<div class="sp-avatar"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b6cf7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-<h4>Dr. Cosmetic Specialist</h4><p>Cosmetic Dentistry</p>
-</div>
-</div>
-</div>
+    <!-- Footer -->
+    <footer class="w-full py-12 md:py-16 mt-auto glass-morphism flex flex-col items-center justify-center gap-8 text-center px-6 border-t border-white/40">
+        <div class="flex flex-wrap gap-6 md:gap-10 mb-2 justify-center">
+            <a class="text-slate-500 hover:text-primary transition-colors font-body text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em]" href="#">Privacy Protocol</a>
+            <a class="text-slate-500 hover:text-primary transition-colors font-body text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em]" href="#">Terms of Care</a>
+            <a class="text-slate-500 hover:text-primary transition-colors font-body text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em]" href="#">Sterilization Log</a>
+            <a class="text-slate-500 hover:text-primary transition-colors font-body text-[9px] md:text-[10px] font-bold uppercase tracking-[0.2em]" href="#">Emergency Response</a>
+        </div>
+        <div class="flex flex-col items-center gap-4">
+            <img alt="Seetha Dental Lounge" class="h-8 md:h-10 w-auto opacity-60" src="https://lh3.googleusercontent.com/aida/ADBb0uh_KTU6SRZYMeEfeTvrThwzbzWPvpLGYMYK7TUlPo75G3l7L1G71gK_MZfifOW5niRvHgx0iiWaxyWsEb9SBg2k_u0mMF4NFK8D9PxZ8CJ6nr-EkHOig_C4SRx89E_u53hJktBi902aJ7855o2r007eHbkKM4s4GcqHfMNIYtN1agCeVChHH-NJXJ8FrSW6Y-ljFlFY24oFnlfA8HoGpGHEWP25kmJhVAvHV_Kpue5lwJCo3d8Q5YIE3a6K47XygiuDhy55Zpqafg"/>
+            <p class="text-slate-400 font-body text-[9px] md:text-[10px] font-medium uppercase tracking-[0.2em] leading-loose">
+                © 2024 Seetha Dental Lounge. Junction, Paravur, Kerala 691301 <br class="hidden sm:block"/> Expert Digital Dentistry &amp; Luxury Lounge Experience
+            </p>
+        </div>
+    </footer>
 
-<div class="pub-section">
-<p class="pub-section-label">Our Testimonials</p>
-<h2 class="pub-section-title">What Patients Say About Us</h2>
-<p class="pub-section-sub">Real experiences from our valued patients at Seetha Dental Lounge.</p>
-<div class="testimonials-grid">
-<div class="testimonial-card">
-<div class="stars">★★★★★</div>
-<p>"The online token system is a game changer. I booked from home and walked in right on time. No waiting at all!"</p>
-<div class="tc-author"><div class="tc-avatar">A</div><div><div class="tc-name">Anitha K.</div><div class="tc-role">Patient</div></div></div>
-</div>
-<div class="testimonial-card">
-<div class="stars">★★★★★</div>
-<p>"Excellent dental care. The doctors are very professional and the clinic is spotlessly clean. Highly recommended!"</p>
-<div class="tc-author"><div class="tc-avatar">R</div><div><div class="tc-name">Rajesh M.</div><div class="tc-role">Patient</div></div></div>
-</div>
-<div class="testimonial-card">
-<div class="stars">★★★★★</div>
-<p>"I could track my queue position on my phone. Arrived just in time. Best dental experience in Paravur!"</p>
-<div class="tc-author"><div class="tc-avatar">S</div><div><div class="tc-name">Sreeja P.</div><div class="tc-role">Patient</div></div></div>
-</div>
-</div>
-</div>
+    <!-- FAB for quick action -->
+    <div class="fixed bottom-6 right-6 z-[40] md:hidden">
+        <button onclick="window.location.href='/login.html'" class="signature-gradient text-white w-14 h-14 rounded-2xl shadow-2xl flex items-center justify-center active:scale-90 transition-transform">
+            <span class="material-symbols-outlined text-2xl font-bold">add</span>
+        </button>
+    </div>
 
-<div style="max-width:1100px;margin:0 auto;padding:0 1.5rem 3rem">
-<div class="pub-cta">
-<h2>Ready to Book Your Appointment?</h2>
-<p>Register for free and get your token in under a minute. No more waiting in line.</p>
-<div style="display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap">
-<a href="/login.html?mode=register" class="btn-white">
-<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-Get Started Free
-</a>
-<a href="/contact.html" style="background:rgba(255,255,255,.15);color:#fff;border:2px solid rgba(255,255,255,.4);border-radius:999px;padding:.72rem 1.75rem;font-size:.95rem;font-weight:700;display:inline-flex;align-items:center;gap:.45rem">Contact Us</a>
-</div>
-</div>
-</div>
+    <script>
+        function toggleMobileMenu() {
+            const overlay = document.getElementById('mobile-nav-overlay');
+            const body = document.body;
+            const isOpen = overlay.classList.contains('opacity-100');
 
-<footer class="pub-footer">
-<div class="pub-footer-inner">
-<div>
-<div class="pf-brand">
-<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-Seetha Dental Lounge
-</div>
-<p class="pf-desc">Premium dental care with a modern queue management system. Serving Paravur, Kerala since 2014.</p>
-<div style="margin-top:1rem"><a href="/login.html?mode=register" style="background:var(--blue);color:#fff;border-radius:999px;padding:.4rem 1rem;font-size:.82rem;font-weight:700">Book Token</a></div>
-</div>
-<div>
-<h5>Quick Links</h5>
-<ul>
-<li><a href="/index.html">Home</a></li>
-<li><a href="#services">Services</a></li>
-<li><a href="#specialists">Specialists</a></li>
-<li><a href="/about.html">About Us</a></li>
-<li><a href="/contact.html">Contact</a></li>
-</ul>
-</div>
-<div>
-<h5>Patient Portal</h5>
-<ul>
-<li><a href="/login.html">Sign In</a></li>
-<li><a href="/login.html?mode=register">Register</a></li>
-<li><a href="/patient.html">My Tokens</a></li>
-</ul>
-</div>
-<div>
-<h5>Contact Info</h5>
-<div class="pf-contact-item">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-Junction, Paravur, Kerala 691301
-</div>
-<div class="pf-contact-item">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-080753 33723
-</div>
-<div class="pf-contact-item">
-<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-Opens 9:30 AM daily
-</div>
-</div>
-</div>
-<div class="pub-footer-bottom">
-<span>© 2025 Seetha Dental Lounge. All rights reserved.</span>
-<span>Junction, Paravur, Kerala 691301</span>
-</div>
-</footer>
+            if (isOpen) {
+                overlay.classList.replace('opacity-100', 'opacity-0');
+                overlay.classList.replace('translate-y-0', 'translate-y-[-10px]');
+                overlay.classList.add('pointer-events-none');
+                body.classList.remove('mobile-menu-open');
+            } else {
+                overlay.classList.replace('opacity-0', 'opacity-100');
+                overlay.classList.replace('translate-y-[-10px]', 'translate-y-0');
+                overlay.classList.remove('pointer-events-none');
+                body.classList.add('mobile-menu-open');
+            }
+        }
+    </script>
 </body>
 </html>

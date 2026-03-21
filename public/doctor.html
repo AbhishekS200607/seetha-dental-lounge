@@ -1,92 +1,171 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="light" lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doctor Queue — Seetha Dental Lounge</title>
-  <link rel="stylesheet" href="/css/style.css">
-  <style>
-    .brand-logo { display: inline-flex; align-items: center; gap: .5rem; }
-    .brand-logo svg { color: var(--yellow); }
-  </style>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Doctor Portal | Seetha Dental Lounge</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#003f87",
+              "secondary": "#4a6079",
+              "background": "#f8f9fa",
+              "surface": "#ffffff",
+              "error": "#ba1a1a",
+              "primary-fixed": "#d7e2ff",
+              "outline-variant": "#c2c6d4",
+              "surface-container-low": "#f3f4f5",
+              "surface-container-lowest": "#ffffff",
+              "tertiary-container": "#00636c",
+              "on-tertiary-container": "#7fdfec",
+              "secondary-container": "#c8dffd",
+              "on-secondary-container": "#4d637c",
+            },
+            fontFamily: {
+              "headline": ["Manrope"],
+              "body": ["Inter"],
+            },
+            borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+          },
+        },
+      }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .signature-gradient {
+            background: linear-gradient(135deg, #003f87 0%, #0056b3 100%);
+        }
+        .nav-active {
+            background: white !important;
+            color: #003f87 !important;
+            font-weight: 700 !important;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .alert { padding: 1rem; border-radius: 0.75rem; font-weight: 500; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; }
+        .alert-error { background: #ffdad6; color: #93000a; }
+        .alert-success { background: #dcfce7; color: #166534; }
+
+        @media (max-width: 1024px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s ease; }
+            .sidebar.open { transform: translateX(0); }
+            .main-content { margin-left: 0 !important; }
+        }
+    </style>
 </head>
-<body class="pub">
+<body class="bg-slate-50 text-slate-900 selection:bg-blue-100">
 
-<div class="pub-nav-wrap">
-<nav class="pub-nav" style="border-radius:16px">
-  <a href="/index.html" class="pn-brand">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 0-5 1.5-5 4 0 1.5.5 3 1 4.5C8.5 12 8 14 8 16c0 2 .5 4 2 4s2-2 2-4c0 2 .5 4 2 4s2-2 2-4c0-2-.5-4-1-5.5.5-1.5 1-3 1-4.5 0-2.5-2.5-4-5-4z"/></svg>
-    Seetha Dental Lounge
-    <span style="font-size:.72rem;color:var(--blue);font-weight:600;background:var(--blue-soft);padding:.1rem .45rem;border-radius:4px">Doctor</span>
-  </a>
-  <div class="pn-links">
-    <span id="doctor-name-nav" style="color:#64748b;font-size:.85rem;display:inline-flex;align-items:center;gap:.3rem;padding:.4rem .85rem">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      <span id="doctor-name-text"></span>
-    </span>
-  </div>
-  <div class="pn-actions">
-    <button onclick="logout()" class="pn-call" style="cursor:pointer;border-color:#ef4444;color:#ef4444">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Logout
-    </button>
-  </div>
-</nav>
-</div>
-
-<div class="container">
-  <div id="alert-box"></div>
-
-  <!-- CURRENT TOKEN -->
-  <div class="card">
-    <p class="card-title" style="display:flex;align-items:center;gap:.4rem">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Currently Serving
-    </p>
-    <div id="current-token-display">
-      <div class="loading-overlay"><span class="spinner"></span> Loading…</div>
+<!-- Sidebar Navigation -->
+<aside id="sidebar" class="sidebar fixed left-0 top-0 h-full w-64 z-40 bg-slate-50 border-r border-slate-200 flex flex-col p-4 pt-24">
+    <div class="flex flex-col gap-1 mb-auto">
+        <button class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 rounded-xl transition-all duration-200 nav-active">
+            <span class="material-symbols-outlined text-xl">format_list_numbered</span>
+            <span class="text-sm font-medium">Patient Queue</span>
+        </button>
+        <button onclick="loadQueue()" class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-100 rounded-xl transition-all duration-200">
+            <span class="material-symbols-outlined text-xl">refresh</span>
+            <span class="text-sm font-medium">Refresh Queue</span>
+        </button>
     </div>
-  </div>
-
-  <!-- QUEUE CONTROLS -->
-  <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap">
-    <button class="btn btn-primary" style="flex:1;display:flex;align-items:center;justify-content:center;gap:.5rem" onclick="callNext()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Call Next Patient
-    </button>
-    <button class="btn btn-secondary btn-sm" onclick="loadQueue()" style="display:inline-flex;align-items:center;gap:.35rem">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-      Refresh
-    </button>
-  </div>
-
-  <!-- WAITING QUEUE -->
-  <div class="card">
-    <p class="card-title" style="display:flex;align-items:center;gap:.4rem">
-      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-      Waiting Queue
-    </p>
-    <div id="queue-list">
-      <div class="loading-overlay"><span class="spinner"></span> Loading…</div>
+    <div class="mt-auto flex flex-col gap-1 border-t border-slate-200 pt-4">
+        <button onclick="logout()" class="flex items-center gap-3 px-4 py-3 text-error hover:bg-red-50 rounded-xl transition-all duration-200">
+            <span class="material-symbols-outlined text-xl">logout</span>
+            <span class="text-sm font-medium">Sign Out</span>
+        </button>
     </div>
-  </div>
-</div>
+</aside>
 
-<footer class="pub-footer" style="margin-top:2rem">
-  <div style="max-width:1100px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.75rem">
-    <span style="color:#fff;font-weight:800;font-size:.95rem">Seetha Dental Lounge</span>
-    <div style="display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap">
-      <span style="display:inline-flex;align-items:center;gap:.3rem">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-        Junction, Paravur, Kerala 691301
-      </span>
-      <span style="display:inline-flex;align-items:center;gap:.3rem">
-        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l.95-.95a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-        080753 33723
-      </span>
+<!-- Top AppBar -->
+<header class="fixed top-0 w-full z-50 glass-panel border-b border-slate-200 flex justify-between items-center px-6 h-20">
+    <div class="flex items-center gap-4 lg:gap-8">
+        <button onclick="document.getElementById('sidebar').classList.toggle('open')" class="lg:hidden p-2 text-slate-600 hover:bg-slate-100 rounded-xl">
+            <span class="material-symbols-outlined">menu</span>
+        </button>
+        <div class="text-xl font-extrabold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent font-headline">
+            Seetha Dental Lounge
+        </div>
+        <span class="hidden md:block bg-primary/10 text-primary text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Clinical Portal</span>
     </div>
-    <span style="font-size:.8rem">© 2025 Seetha Dental Lounge</span>
-  </div>
+    <div class="flex items-center gap-4">
+        <div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+        <div class="flex items-center gap-3">
+            <div id="doctor-name-nav" class="text-right hidden sm:block">
+                <p id="doctor-name-text" class="text-xs font-bold text-primary leading-tight">Loading...</p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Specialist</p>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                <span class="material-symbols-outlined">medical_services</span>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Main Content -->
+<main class="main-content lg:ml-64 pt-24 p-6 md:p-8 min-h-screen">
+    <div id="alert-box"></div>
+
+    <div class="max-w-5xl mx-auto space-y-10">
+        <!-- Currently Serving Section -->
+        <section class="space-y-6">
+            <h2 class="text-xs font-bold uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                Active Session
+            </h2>
+            <div class="bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden relative group">
+                <div class="absolute top-0 right-0 p-12 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+                    <span class="material-symbols-outlined text-9xl">patient_list</span>
+                </div>
+                <div id="current-token-display" class="p-10 md:p-12 relative z-10">
+                    <div class="flex items-center justify-center py-12">
+                        <span class="material-symbols-outlined animate-spin text-primary/30 text-4xl">sync</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Queue Controls -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <button onclick="callNext()" class="signature-gradient text-white font-headline font-bold py-6 rounded-3xl shadow-xl hover:shadow-primary/40 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 group">
+                <span class="material-symbols-outlined text-2xl group-hover:translate-x-1 transition-transform">play_circle</span>
+                Call Next Patient
+            </button>
+            <button onclick="loadQueue()" class="bg-white text-primary border border-slate-200 font-headline font-bold py-6 rounded-3xl shadow-sm hover:bg-slate-50 transition-all flex items-center justify-center gap-3 group">
+                <span class="material-symbols-outlined text-2xl group-hover:rotate-180 transition-transform duration-500">refresh</span>
+                Update Queue
+            </button>
+        </div>
+
+        <!-- Waiting Queue -->
+        <section class="space-y-6">
+            <div class="flex items-center justify-between">
+                <h2 class="text-xl font-headline font-extrabold text-primary flex items-center gap-2">
+                    <span class="material-symbols-outlined">group</span>
+                    Waiting Queue
+                </h2>
+                <span id="queue-count" class="bg-slate-100 text-slate-500 text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-widest">0 Patients</span>
+            </div>
+            <div id="queue-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="col-span-full py-12 text-center text-slate-400 italic bg-white/50 border-2 border-dashed border-slate-200 rounded-[2rem]">
+                    Waiting for the session to begin...
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer class="w-full py-8 text-slate-400 text-center px-6 mt-auto">
+    <p class="text-[10px] font-bold uppercase tracking-widest">© 2025 Seetha Dental Lounge • Expert Clinical Portal</p>
 </footer>
 
 <script src="/js/auth.js"></script>
