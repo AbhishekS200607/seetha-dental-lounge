@@ -333,21 +333,33 @@ function tokenBookingHtml({ name, tokenNumber, doctorName, bookingDate, slotTime
 
 // ── Send helpers ─────────────────────────────────────────────
 async function sendWelcome({ to, name }) {
-  if (!process.env.SMTP_HOST) return;
-  await transporter.sendMail({
-    from: FROM, to,
-    subject: `Welcome to Seetha Dental Lounge, ${name}!`,
-    html: welcomeHtml(name),
-  });
+  if (!process.env.SMTP_HOST) { console.warn('[email] SMTP_HOST not set, skipping welcome email'); return; }
+  if (!process.env.SMTP_FROM) { console.warn('[email] SMTP_FROM not set, skipping welcome email'); return; }
+  try {
+    const info = await transporter.sendMail({
+      from: FROM, to,
+      subject: `Welcome to Seetha Dental Lounge, ${name}!`,
+      html: welcomeHtml(name),
+    });
+    console.log('[email] Welcome sent to', to, '| messageId:', info.messageId);
+  } catch (err) {
+    console.error('[email] Failed to send welcome to', to, '| error:', err.message);
+  }
 }
 
 async function sendTokenConfirmation({ to, name, tokenNumber, doctorName, bookingDate, slotTime, specialty }) {
-  if (!process.env.SMTP_HOST) return;
-  await transporter.sendMail({
-    from: FROM, to,
-    subject: `Token #${tokenNumber} Confirmed — Seetha Dental Lounge`,
-    html: tokenBookingHtml({ name, tokenNumber, doctorName, bookingDate, slotTime, specialty }),
-  });
+  if (!process.env.SMTP_HOST) { console.warn('[email] SMTP_HOST not set, skipping token confirmation'); return; }
+  if (!process.env.SMTP_FROM) { console.warn('[email] SMTP_FROM not set, skipping token confirmation'); return; }
+  try {
+    const info = await transporter.sendMail({
+      from: FROM, to,
+      subject: `Token #${tokenNumber} Confirmed — Seetha Dental Lounge`,
+      html: tokenBookingHtml({ name, tokenNumber, doctorName, bookingDate, slotTime, specialty }),
+    });
+    console.log('[email] Token confirmation sent to', to, '| messageId:', info.messageId);
+  } catch (err) {
+    console.error('[email] Failed to send token confirmation to', to, '| error:', err.message);
+  }
 }
 
 module.exports = { sendWelcome, sendTokenConfirmation };
