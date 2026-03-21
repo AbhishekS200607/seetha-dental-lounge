@@ -1,2 +1,4 @@
 .env
 node_modules/
+testEmail.js
+security-report.txt

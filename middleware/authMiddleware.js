@@ -30,7 +30,7 @@ async function authenticate(req, res, next) {
     return res.status(403).json({ success: false, message: 'Account suspended or banned' });
   }
 
-  req.user = profile;
+  req.user = { ...profile, email: user.email };
   next();
 }
 

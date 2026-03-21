@@ -3,6 +3,7 @@ const { ok, fail } = require('../utils/responseHelpers');
 const { bookToken } = require('../services/tokenService');
 const audit = require('../services/auditService');
 const { todayIST } = require('../utils/dateUtils');
+const { sendTokenConfirmation } = require('../services/emailService');
 
 async function getDoctors(req, res, next) {
   try {
@@ -28,6 +29,18 @@ async function bookNewToken(req, res, next) {
       bookingDate: booking_date, 
       slotTime: slot_time 
     });
+
+    // Fire-and-forget booking confirmation email
+    sendTokenConfirmation({
+      to: req.user.email,
+      name: req.user.full_name,
+      tokenNumber: token.token_number,
+      doctorName: token.doctor?.display_name || '',
+      bookingDate: token.booking_date,
+      slotTime: token.slot_time,
+      specialty: token.doctor?.specialty || '',
+    }).catch(() => {});
+
     return ok(res, token, 'Token booked successfully', 201);
   } catch (e) {
     if (e.status) return fail(res, e.message, e.status);

@@ -22,6 +22,13 @@ function showSection(name) {
   if (name === 'tokens')    { loadDoctorFilter(); loadTokens(); }
 }
 
+function safeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 // ── Dashboard ──────────────────────────────────────────────
 async function loadDashboard() {
   const res = await apiFetch('/admin/dashboard');
@@ -42,32 +49,32 @@ async function loadDashboard() {
     'emerald-600': '#059669', 'amber-600': '#d97706', 'error': '#ba1a1a'
   };
 
-  document.getElementById('stat-grid').innerHTML = stats.map(s => {
+  const statGrid = document.getElementById('stat-grid');
+  statGrid.innerHTML = '';
+  stats.forEach(s => {
     const color = colorMap[s.c] || '#003f87';
     const clickable = ['waiting','in_progress','completed','skipped','cancelled'].includes(s.status);
-    return `
-    <div onclick="${clickable ? `openStatDrawer('${s.status}','${s.l}')` : ''}" 
-         style="background:white;border:1px solid #e2e8f0;border-radius:1rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.06);${clickable ? 'cursor:pointer;' : ''}transition:box-shadow 0.2s"
-         onmouseover="${clickable ? "this.style.boxShadow='0 4px 12px rgba(0,0,0,0.1)'" : ''}" 
-         onmouseout="this.style.boxShadow='0 1px 3px rgba(0,0,0,0.06)'">
+    const card = document.createElement('div');
+    card.style.cssText = `background:white;border:1px solid #e2e8f0;border-radius:1rem;padding:1rem;box-shadow:0 1px 3px rgba(0,0,0,0.06);${clickable ? 'cursor:pointer;' : ''}transition:box-shadow 0.2s`;
+    
+    if (clickable) {
+      card.onclick = () => openStatDrawer(s.status, s.l);
+      card.onmouseover = () => card.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+      card.onmouseout = () => card.style.boxShadow = '0 1px 3px rgba(0,0,0,0.06)';
+    }
+
+    card.innerHTML = `
       <span class="material-symbols-outlined" style="color:${color};opacity:0.8;font-size:1.5rem">${s.i}</span>
       <div style="font-size:2rem;font-weight:900;line-height:1;margin:0.25rem 0;color:${color}">${s.n}</div>
       <div style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#94a3b8">${s.l}</div>
       ${clickable && s.n > 0 ? '<div style="font-size:0.6rem;color:#94a3b8;margin-top:0.25rem">tap to view ›</div>' : ''}
-    </div>`;
-  }).join('');
+    `;
+    statGrid.appendChild(card);
+  });
 
+  const statsWrap = document.getElementById('doctor-stats-wrap');
   if (doctorList.length && Object.keys(byDoctor).length) {
-    const rows = Object.entries(byDoctor).map(([did, count]) => {
-      const doc = doctorList.find(d => d.id === did);
-      return `
-        <tr class="hover:bg-slate-50/50 transition-colors text-sm">
-          <td class="px-6 py-4 font-bold text-slate-700">${doc?.display_name || did}</td>
-          <td class="px-6 py-4 text-right"><span class="bg-primary/5 text-primary px-3 py-1 rounded-full font-bold">${count}</span></td>
-        </tr>`;
-    }).join('');
-    
-    document.getElementById('doctor-stats-wrap').innerHTML = `
+    statsWrap.innerHTML = `
       <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden max-w-2xl mt-8">
         <div class="px-6 py-5 border-b border-slate-100">
           <h3 class="font-headline font-bold text-primary">Doctor-wise Token Summary</h3>
@@ -80,12 +87,28 @@ async function loadDashboard() {
                 <th class="px-6 py-4 text-right">Tokens</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-50">${rows}</tbody>
+            <tbody id="doctor-stats-tbody" class="divide-y divide-slate-50"></tbody>
           </table>
         </div>
       </div>`;
+    
+    const tbody = document.getElementById('doctor-stats-tbody');
+    Object.entries(byDoctor).forEach(([did, count]) => {
+      const doc = doctorList.find(d => d.id === did);
+      const tr = document.createElement('tr');
+      tr.className = "hover:bg-slate-50/50 transition-colors text-sm";
+      tr.innerHTML = `
+        <td class="px-6 py-4 font-bold text-slate-700 name-cell"></td>
+        <td class="px-6 py-4 text-right"><span class="bg-primary/5 text-primary px-3 py-1 rounded-full font-bold">${count}</span></td>
+      `;
+      tr.querySelector('.name-cell').textContent = doc?.display_name || did;
+      tbody.appendChild(tr);
+    });
+  } else {
+    statsWrap.innerHTML = '';
   }
 }
+
 
 // ── Doctors ────────────────────────────────────────────────
 async function loadDoctors() {
@@ -93,41 +116,65 @@ async function loadDoctors() {
   if (!res.success) return;
   doctorList = res.data;
 
-  document.getElementById('doctors-tbody').innerHTML = res.data.length
-    ? res.data.map(d => `
-      <tr class="hover:bg-slate-50/50 transition-colors group">
-        <td class="px-6 py-4">
-          <div class="flex flex-col">
-            <span class="font-bold text-slate-900">${d.display_name}</span>
-            <span class="text-xs text-slate-400 font-medium">${d.profile?.email || '—'}</span>
-            <span class="text-xs text-slate-400 font-medium">${d.profile?.phone || '—'}</span>
-          </div>
-        </td>
-        <td class="px-6 py-4 text-sm text-slate-600">${d.specialty || '—'}</td>
-        <td class="px-6 py-4 text-sm text-slate-600 font-medium">${d.consultation_start_time || '—'} – ${d.consultation_end_time || '—'}</td>
-        <td class="px-6 py-4 text-sm font-bold text-slate-400">${d.max_daily_tokens || '∞'}</td>
-        <td class="px-6 py-4">
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" class="sr-only peer" ${d.is_available ? 'checked' : ''} onchange="toggleAvailability('${d.id}',this.checked)">
-            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-          </label>
-        </td>
-        <td class="px-6 py-4 text-right">
-          <div class="flex items-center justify-end gap-2">
-            <button onclick="openDoctorModal('${d.id}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit Doctor">
-              <span class="material-symbols-outlined text-lg">edit</span>
-            </button>
-            <button onclick="viewDoctorQueue('${d.id}','${d.display_name}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="View Queue">
-              <span class="material-symbols-outlined text-lg">format_list_numbered</span>
-            </button>
-            <button onclick="deleteDoctor('${d.id}','${escHtml(d.display_name)}')" class="p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Delete Doctor">
-              <span class="material-symbols-outlined text-lg">delete</span>
-            </button>
-          </div>
-        </td>
-      </tr>`).join('')
-    : '<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">No medical staff found</td></tr>';
+  const tbody = document.getElementById('doctors-tbody');
+  tbody.innerHTML = '';
+
+  if (!res.data.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">No medical staff found</td></tr>';
+    return;
+  }
+
+  res.data.forEach(d => {
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-50/50 transition-colors group";
+    tr.innerHTML = `
+      <td class="px-6 py-4">
+        <div class="flex flex-col">
+          <span class="font-bold text-slate-900 name-cell"></span>
+          <span class="text-xs text-slate-400 font-medium email-cell"></span>
+          <span class="text-xs text-slate-400 font-medium phone-cell"></span>
+        </div>
+      </td>
+      <td class="px-6 py-4 text-sm text-slate-600 specialty-cell"></td>
+      <td class="px-6 py-4 text-sm text-slate-600 font-medium hours-cell"></td>
+      <td class="px-6 py-4 text-sm font-bold text-slate-400 max-cell"></td>
+      <td class="px-6 py-4">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer avail-check" ${d.is_available ? 'checked' : ''}>
+          <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+        </label>
+      </td>
+      <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-2">
+          <button class="edit-btn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit Doctor">
+            <span class="material-symbols-outlined text-lg">edit</span>
+          </button>
+          <button class="queue-btn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="View Queue">
+            <span class="material-symbols-outlined text-lg">format_list_numbered</span>
+          </button>
+          <button class="delete-btn p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Delete Doctor">
+            <span class="material-symbols-outlined text-lg">delete</span>
+          </button>
+        </div>
+      </td>
+    `;
+
+    tr.querySelector('.name-cell').textContent = d.display_name;
+    tr.querySelector('.email-cell').textContent = d.profile?.email || '—';
+    tr.querySelector('.phone-cell').textContent = d.profile?.phone || '—';
+    tr.querySelector('.specialty-cell').textContent = d.specialty || '—';
+    tr.querySelector('.hours-cell').textContent = `${d.consultation_start_time || '—'} – ${d.consultation_end_time || '—'}`;
+    tr.querySelector('.max-cell').textContent = d.max_daily_tokens || '∞';
+
+    tr.querySelector('.avail-check').onchange = (e) => toggleAvailability(d.id, e.target.checked);
+    tr.querySelector('.edit-btn').onclick = () => openDoctorModal(d.id);
+    tr.querySelector('.queue-btn').onclick = () => viewDoctorQueue(d.id, d.display_name);
+    tr.querySelector('.delete-btn').onclick = () => deleteDoctor(d.id, d.display_name);
+
+    tbody.appendChild(tr);
+  });
 }
+
 
 async function deleteDoctor(id, name) {
   if (!confirm(`Delete Dr. ${name}? This will also delete their account and cannot be undone.`)) return;
@@ -225,7 +272,6 @@ async function saveDoctorForm(e) {
 
 // ── PATIENT MANAGEMENT ─────────────────────────────────────
 
-// ── Patients ───────────────────────────────────────────────
 async function loadPatients() {
   const search = document.getElementById('patient-search')?.value.trim() || '';
   const url = `/admin/users?role=patient${search ? `&search=${encodeURIComponent(search)}` : ''}`;
@@ -233,36 +279,84 @@ async function loadPatients() {
   if (!res.success) return;
 
   const items = res.data.items || [];
+  const tbody = document.getElementById('patients-tbody');
+  tbody.innerHTML = '';
 
-  document.getElementById('patients-tbody').innerHTML = items.length
-    ? items.map(u => `
-      <tr class="hover:bg-slate-50/50 transition-colors group">
-        <td class="px-6 py-4 font-bold text-slate-900">${u.full_name}</td>
-        <td class="px-6 py-4 text-sm text-slate-600">${u.phone || '—'}</td>
-        <td class="px-6 py-4">${statusBadge(u)}</td>
-        <td class="px-6 py-4 text-xs font-bold text-slate-400">${new Date(u.created_at).toLocaleDateString('en-IN')}</td>
-        <td class="px-6 py-4 text-right">
-          <div class="flex items-center justify-end gap-1">
-            <button onclick="openPatientModal('${u.id}','${escHtml(u.full_name)}','${u.phone||''}','${u.email||''}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit Profile">
-              <span class="material-symbols-outlined text-lg">edit</span>
-            </button>
-            <button onclick="viewPatientHistory('${u.id}','${escHtml(u.full_name)}')" class="p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Token History">
-              <span class="material-symbols-outlined text-lg">history</span>
-            </button>
-            <button onclick="deletePatient('${u.id}','${escHtml(u.full_name)}')" class="p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Delete Patient">
-              <span class="material-symbols-outlined text-lg">delete</span>
-            </button>
-            ${u.is_banned
-              ? `<button onclick="setUserStatus('${u.id}',{is_banned:false})" class="p-2 text-emerald-500 hover:bg-emerald-50 rounded-xl transition-all" title="Unban Patient"><span class="material-symbols-outlined text-lg">lock_open</span></button>`
-              : `<button onclick="setUserStatus('${u.id}',{is_banned:true})" class="p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Ban Patient"><span class="material-symbols-outlined text-lg">block</span></button>`}
-            ${u.is_active
-              ? `<button onclick="setUserStatus('${u.id}',{is_active:false})" class="p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-all" title="Deactivate Account"><span class="material-symbols-outlined text-lg">do_not_disturb_on</span></button>`
-              : `<button onclick="setUserStatus('${u.id}',{is_active:true})" class="p-2 text-emerald-500 hover:bg-emerald-50 rounded-xl transition-all" title="Activate Account"><span class="material-symbols-outlined text-lg">check_circle</span></button>`}
-          </div>
-        </td>
-      </tr>`).join('')
-    : '<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400">No patient records found</td></tr>';
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="px-6 py-12 text-center text-slate-400">No patient records found</td></tr>';
+    return;
+  }
+
+  items.forEach(u => {
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-50/50 transition-colors group";
+    tr.innerHTML = `
+      <td class="px-6 py-4 font-bold text-slate-900 name-cell"></td>
+      <td class="px-6 py-4 text-sm text-slate-600 phone-cell"></td>
+      <td class="px-6 py-4 status-cell"></td>
+      <td class="px-6 py-4 text-xs font-bold text-slate-400 date-cell"></td>
+      <td class="px-6 py-4 text-right">
+        <div class="flex items-center justify-end gap-1">
+          <button class="edit-btn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Edit Profile">
+            <span class="material-symbols-outlined text-lg">edit</span>
+          </button>
+          <button class="hist-btn p-2 text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl transition-all" title="Token History">
+            <span class="material-symbols-outlined text-lg">history</span>
+          </button>
+          <button class="del-btn p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Delete Patient">
+            <span class="material-symbols-outlined text-lg">delete</span>
+          </button>
+          <span class="status-btns flex items-center gap-1"></span>
+        </div>
+      </td>
+    `;
+
+    tr.querySelector('.name-cell').textContent = u.full_name;
+    tr.querySelector('.phone-cell').textContent = u.phone || '—';
+    tr.querySelector('.date-cell').textContent = new Date(u.created_at).toLocaleDateString('en-IN');
+    tr.querySelector('.status-cell').innerHTML = statusBadge(u);
+
+    const sBtns = tr.querySelector('.status-btns');
+    if (u.is_banned) {
+      const btn = document.createElement('button');
+      btn.className = "p-2 text-emerald-500 hover:bg-emerald-50 rounded-xl transition-all";
+      btn.title = "Unban Patient";
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">lock_open</span>';
+      btn.onclick = () => setUserStatus(u.id, { is_banned: false });
+      sBtns.appendChild(btn);
+    } else {
+      const btn = document.createElement('button');
+      btn.className = "p-2 text-error hover:bg-red-50 rounded-xl transition-all";
+      btn.title = "Ban Patient";
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">block</span>';
+      btn.onclick = () => setUserStatus(u.id, { is_banned: true });
+      sBtns.appendChild(btn);
+    }
+
+    if (u.is_active) {
+      const btn = document.createElement('button');
+      btn.className = "p-2 text-slate-400 hover:text-amber-600 hover:bg-amber-50 rounded-xl transition-all";
+      btn.title = "Deactivate Account";
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">do_not_disturb_on</span>';
+      btn.onclick = () => setUserStatus(u.id, { is_active: false });
+      sBtns.appendChild(btn);
+    } else {
+      const btn = document.createElement('button');
+      btn.className = "p-2 text-emerald-500 hover:bg-emerald-50 rounded-xl transition-all";
+      btn.title = "Activate Account";
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">check_circle</span>';
+      btn.onclick = () => setUserStatus(u.id, { is_active: true });
+      sBtns.appendChild(btn);
+    }
+
+    tr.querySelector('.edit-btn').onclick = () => openPatientModal(u.id, u.full_name, u.phone, u.email);
+    tr.querySelector('.hist-btn').onclick = () => viewPatientHistory(u.id, u.full_name);
+    tr.querySelector('.del-btn').onclick  = () => deletePatient(u.id, u.full_name);
+
+    tbody.appendChild(tr);
+  });
 }
+
 
 async function deletePatient(id, name) {
   if (!confirm(`Delete patient ${name}? This cannot be undone.`)) return;
@@ -377,27 +471,52 @@ async function loadTokens() {
   if (!res.success) return;
 
   const items = res.data.items || [];
+  const tbody = document.getElementById('tokens-tbody');
+  tbody.innerHTML = '';
 
-  document.getElementById('tokens-tbody').innerHTML = items.length
-    ? items.map(t => `
-      <tr class="hover:bg-slate-50/50 transition-colors text-sm">
-        <td class="px-6 py-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono font-bold text-xs">#${formatToken(t)}</span></td>
-        <td class="px-6 py-4">
-          <div class="flex flex-col">
-            <span class="font-bold text-slate-900">${t.patient?.full_name || '—'}</span>
-            <span class="text-[10px] text-slate-400 uppercase font-bold">${t.patient?.phone||''}</span>
-          </div>
-        </td>
-        <td class="px-6 py-4 text-slate-600 font-medium">${t.doctor?.display_name || '—'}</td>
-        <td class="px-6 py-4 text-slate-500">${t.booking_date}</td>
-        <td class="px-6 py-4">${badge(t.status)}</td>
-        <td class="px-6 py-4 text-right">
-          ${!['completed','cancelled'].includes(t.status)
-            ? `<button onclick="adminCancel('${t.id}')" class="p-2 text-error hover:bg-red-50 rounded-xl transition-all" title="Cancel Token"><span class="material-symbols-outlined text-lg">cancel</span></button>`
-            : '—'}
-        </td>
-      </tr>`).join('')
-    : '<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">No token logs found</td></tr>';
+  if (!items.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="px-6 py-12 text-center text-slate-400">No token logs found</td></tr>';
+    return;
+  }
+
+  items.forEach(t => {
+    const tr = document.createElement('tr');
+    tr.className = "hover:bg-slate-50/50 transition-colors text-sm";
+    tr.innerHTML = `
+      <td class="px-6 py-4"><span class="bg-slate-100 text-slate-700 px-2 py-1 rounded font-mono font-bold text-xs token-cell"></span></td>
+      <td class="px-6 py-4">
+        <div class="flex flex-col">
+          <span class="font-bold text-slate-900 name-cell"></span>
+          <span class="text-[10px] text-slate-400 uppercase font-bold phone-cell"></span>
+        </div>
+      </td>
+      <td class="px-6 py-4 text-slate-600 font-medium doc-cell"></td>
+      <td class="px-6 py-4 text-slate-500 date-cell"></td>
+      <td class="px-6 py-4 status-cell"></td>
+      <td class="px-6 py-4 text-right action-cell"></td>
+    `;
+
+    tr.querySelector('.token-cell').textContent = `#${formatToken(t)}`;
+    tr.querySelector('.name-cell').textContent = t.patient?.full_name || '—';
+    tr.querySelector('.phone-cell').textContent = t.patient?.phone || '';
+    tr.querySelector('.doc-cell').textContent = t.doctor?.display_name || '—';
+    tr.querySelector('.date-cell').textContent = t.booking_date;
+    tr.querySelector('.status-cell').innerHTML = badge(t.status);
+
+    const actionCell = tr.querySelector('.action-cell');
+    if (!['completed','cancelled'].includes(t.status)) {
+      const btn = document.createElement('button');
+      btn.className = "p-2 text-error hover:bg-red-50 rounded-xl transition-all";
+      btn.title = "Cancel Token";
+      btn.innerHTML = '<span class="material-symbols-outlined text-lg">cancel</span>';
+      btn.onclick = () => adminCancel(t.id);
+      actionCell.appendChild(btn);
+    } else {
+      actionCell.textContent = '—';
+    }
+
+    tbody.appendChild(tr);
+  });
 }
 
 async function adminCancel(id) {
@@ -431,16 +550,19 @@ function closeHistoryDrawer() {
 }
 
 function renderDrawerTokens(res, statusFilter) {
+  const body = document.getElementById('drawer-body');
   if (!res.success) {
-    document.getElementById('drawer-body').innerHTML = `<div class="alert alert-error">${res.message}</div>`;
+    body.innerHTML = `<div class="alert alert-error">${res.message}</div>`;
     return;
   }
   const items = res.data.items || res.data;
   if (!items.length) {
-    document.getElementById('drawer-body').innerHTML = '<div class="py-12 text-center text-slate-400 italic">No records found</div>';
+    body.innerHTML = '<div class="py-12 text-center text-slate-400 italic">No records found</div>';
     return;
   }
-  document.getElementById('drawer-body').innerHTML = items.map(t => {
+
+  body.innerHTML = '';
+  items.forEach(t => {
     const timeMap = {
       completed:   { label: 'Completed at',  val: t.completed_at },
       cancelled:   { label: 'Cancelled at',  val: t.cancelled_at },
@@ -451,40 +573,65 @@ function renderDrawerTokens(res, statusFilter) {
     const tm = timeMap[t.status];
     const timeStr = tm?.val ? new Date(tm.val).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Kolkata' }) : null;
 
-    return `
-    <div class="bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3">
+    const card = document.createElement('div');
+    card.className = "bg-white p-5 rounded-2xl border border-slate-100 shadow-sm space-y-3";
+    card.innerHTML = `
       <div class="flex justify-between items-start">
         <div>
-          <span class="text-xl font-black text-primary">#${t.token_number}</span>
-          <span class="ml-2 text-xs text-slate-400 font-bold">${t.booking_date}</span>
+          <span class="text-xl font-black text-primary token-num"></span>
+          <span class="ml-2 text-xs text-slate-400 font-bold date-text"></span>
         </div>
-        ${badge(t.status)}
+        <span class="badge-wrap"></span>
       </div>
       <div class="space-y-1.5">
         <div class="flex items-center gap-2 text-sm font-bold text-slate-800">
           <span class="material-symbols-outlined text-base text-primary">person</span>
-          ${t.patient?.full_name || '—'}
+          <span class="name-text"></span>
         </div>
         <div class="flex items-center gap-2 text-sm text-slate-500">
           <span class="material-symbols-outlined text-base">call</span>
-          ${t.patient?.phone || '—'}
+          <span class="phone-text"></span>
         </div>
         <div class="flex items-center gap-2 text-sm text-slate-500">
           <span class="material-symbols-outlined text-base text-primary">medical_services</span>
-          ${t.doctor?.display_name || '—'}
+          <span class="doc-text"></span>
         </div>
         ${timeStr ? `<div class="flex items-center gap-2 text-sm text-slate-500">
           <span class="material-symbols-outlined text-base">schedule</span>
           ${tm.label}: <span class="font-bold text-slate-700">${timeStr}</span>
         </div>` : ''}
-        ${t.cancel_reason ? `<div class="flex items-center gap-2 text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-xl">
-          <span class="material-symbols-outlined text-sm">info</span>${t.cancel_reason}
-        </div>` : ''}
-        ${t.notes ? `<div class="text-xs text-slate-500 bg-slate-50 px-3 py-2 rounded-xl italic">"${t.notes}"</div>` : ''}
+        <div class="reason-wrap hidden">
+          <div class="flex items-center gap-2 text-xs font-bold text-red-500 bg-red-50 px-3 py-1.5 rounded-xl">
+            <span class="material-symbols-outlined text-sm">info</span>
+            <span class="reason-text"></span>
+          </div>
+        </div>
+        <div class="notes-wrap hidden">
+          <div class="text-xs text-slate-500 bg-slate-50 px-3 py-2 rounded-xl italic notes-text"></div>
+        </div>
       </div>
-    </div>`;
-  }).join('');
+    `;
+
+    card.querySelector('.token-num').textContent = `#${t.token_number}`;
+    card.querySelector('.date-text').textContent = t.booking_date;
+    card.querySelector('.badge-wrap').innerHTML = badge(t.status);
+    card.querySelector('.name-text').textContent = t.patient?.full_name || '—';
+    card.querySelector('.phone-text').textContent = t.patient?.phone || '—';
+    card.querySelector('.doc-text').textContent = t.doctor?.display_name || '—';
+    
+    if (t.cancel_reason) {
+      card.querySelector('.reason-wrap').classList.remove('hidden');
+      card.querySelector('.reason-text').textContent = t.cancel_reason;
+    }
+    if (t.notes) {
+      card.querySelector('.notes-wrap').classList.remove('hidden');
+      card.querySelector('.notes-text').textContent = `"${t.notes}"`;
+    }
+
+    body.appendChild(card);
+  });
 }
+
 
 // ── Helpers ────────────────────────────────────────────────
 function alertHtml(msg) {

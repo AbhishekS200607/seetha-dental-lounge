@@ -10,6 +10,7 @@ function authHeaders() {
 
 async function apiFetch(path, options = {}) {
   const res = await fetch(API + path, {
+    credentials: 'include',
     headers: authHeaders(),
     ...options
   });
@@ -26,7 +27,7 @@ async function apiFetch(path, options = {}) {
 function logout() {
   localStorage.removeItem('sdl_profile');
   // Call server to clear cookie
-  fetch(API + '/auth/logout', { method: 'POST' }).finally(() => {
+  fetch(API + '/auth/logout', { method: 'POST', credentials: 'include' }).finally(() => {
     location.href = '/login.html';
   });
 }
